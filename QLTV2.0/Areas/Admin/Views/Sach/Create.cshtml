@@ -1,0 +1,83 @@
+﻿@model QLTV2._0.Models.Sach
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Tạo mới sách</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Masach" class="control-label">Mã sách</label>
+                <input asp-for="Masach" class="form-control" id="txtMaSach"/>
+                <span asp-validation-for="Masach" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Manxb" class="control-label">Tên nhà xuất bản</label>
+                <select asp-for="Manxb" class ="form-control" asp-items="ViewBag.Manxb"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Maphieunhap" class="control-label">Mã phiếu nhập</label>
+                <select asp-for="Maphieunhap" class ="form-control" asp-items="ViewBag.Maphieunhap"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Matheloai" class="control-label">Tên thể loại</label>
+                <select asp-for="Matheloai" class ="form-control" asp-items="ViewBag.Matheloai"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tensach" class="control-label">Tên sách</label>
+                <input asp-for="Tensach" class="form-control" />
+                <span asp-validation-for="Tensach" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Giaban" class="control-label">Giá bán</label>
+                <input asp-for="Giaban" class="form-control" />
+                <span asp-validation-for="Giaban" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="Mota" class="control-label">Mô tả</label>
+                <textarea asp-for="Mota" class="form-control" ></textarea>
+                <span asp-validation-for="Mota" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" id="btnSubmit"  disabled/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section scripts
+{
+    <script>
+      
+      const handleCheckkey=()=>
+      {
+            $("#txtMaSach").keyup(()=>
+        {
+            $.post("Checkkey",{MaSach:$("#txtMaSach").val()},(data,err)=>
+        {
+            if(data.success)
+            {
+                 $("#btnSubmit").prop('disabled', false);
+            }
+            else
+            {
+                alert("Đã tồn tại mã sách này, vui lòng kiểm tra lại.")
+                $("#txtMaSach").val("");
+                 $("#btnSubmit").prop('disabled', true);
+            }
+        })
+        })
+      }
+
+       handleCheckkey();
+    </script>
+}

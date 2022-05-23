@@ -1,0 +1,31 @@
+﻿@model List<QLTV2._0.Models.Chitiettacgia>
+
+@{
+    ViewData["Title"] = "Sách của tác giả";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div>
+    <h4>Sách của tác giả</h4>
+    <hr />
+   <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Tên Sách</th>
+    </tr>
+  </thead>
+  <tbody>
+      @foreach(var item in Model)
+            {
+                    <tr>
+                        <th>
+                            
+                               <a target="_blank" asp-area="Admin" asp-controller="Sach" asp-action="Edit" asp-route-id=@item.MasachNavigation.Masach> @item.MasachNavigation.Tensach</a>
+                         
+                        </th>
+                
+                    </tr>
+            }
+        
+  </tbody>
+</table>
+</div>

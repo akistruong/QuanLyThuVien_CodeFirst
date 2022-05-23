@@ -1,0 +1,96 @@
+﻿@using QLTV2._0.Helper
+@model List<QLTV2._0.Models.Hoadon>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Index</h1>
+
+<div class="table-responsive">
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#ID</th>
+      <th scope="col">Ngày đặt hàng</th>
+      <th scope="col">Tổng hóa đơn</th>
+      <th scope="col">Phí giao hàng</th>
+      <th scope="col">Số tiền đã giảm</th>
+      <th scope="col">Tổng số lượng</th>
+      <th scope="col">Trạng thái đơn hàng</th>
+      <th scope="col">Xác nhận đơn hàng</th>
+    </tr>
+  </thead>
+  <tbody>
+      @foreach(var item in Model)
+            {
+                 <tr>
+      <th scope="row">@item.IdHoadon</th>
+      <td>@item.Createdat</td>
+      <td>@FormatCurrency.Vnd(@item.TongHoaDon)</td>
+      <td>@FormatCurrency.Vnd(@item.Phiship)</td>
+      <td>@FormatCurrency.Vnd(@item.Discount)</td>
+      <td>
+          @if(item.Status==0)
+                        {
+                            <p class="text-primary">Đang chờ xác nhận</p>
+                        }
+                        else if(item.Status==1)
+                        {
+                            <p>Đã xác nhận</p>
+                        }
+                        else
+                        {
+                            <p>Đơn bị hủy</p>
+                        }
+                    </td>
+                    <td >
+                        <button class="btn btn-info ">Xác nhận</button>
+                        <button class="btn btn-danger btnDelete"data-toggle="modal" _order_id="@item.IdHoadon"> Hủy đơn</button>
+                    </td>
+    </tr>
+            }
+           
+   
+  </tbody>
+</table>
+</div>
+<div class="modal fade" id="DeleteComfirmModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc muốn xóa?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Tác vụ này không thể khôi phục. </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-danger" id="btn_confirm_delete">Xác nhận xóa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section scripts{
+    <script>
+        let _id=0;
+        $(".btnDelete").click((e)=>
+        {
+            _id = e.target.getAttribute("_order_id")
+            $("#DeleteComfirmModal").modal("show")
+        })
+        $("#btn_confirm_delete").click(()=>
+        {
+           
+            $.post("/admin/DonHang/ConfirmDeleteOrder",{orderId:_id},(data,err)=>
+        {
+            console.log(data)
+        })
+        })
+    
+    </script>
+}

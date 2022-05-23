@@ -1,0 +1,122 @@
+﻿@using Microsoft.AspNetCore.Routing
+@model QLTV2._0.Models.Sach
+
+@{
+    ViewData["Title"] = "Chỉnh sửa Sách";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Masach" />
+            <div class="form-group">
+                <label asp-for="Manxb" class="control-label">Mã nhà xuất bản</label>
+                <select asp-for="Manxb" class="form-control" asp-items="ViewBag.Manxb"></select>
+                <span asp-validation-for="Manxb" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Maphieunhap" class="control-label">Mã phiếu nhập</label>
+                <select asp-for="Maphieunhap" class="form-control" asp-items="ViewBag.Maphieunhap"></select>
+                <span asp-validation-for="Maphieunhap" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Matheloai" class="control-label">Mã thể loại</label>
+                <select asp-for="Matheloai" class="form-control" asp-items="ViewBag.Matheloai"></select>
+                <span asp-validation-for="Matheloai" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tensach" class="control-label">Tên sách</label>
+                <input asp-for="Tensach" class="form-control" />
+                <span asp-validation-for="Tensach" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Giaban" class="control-label">Giá bán</label>
+                <input asp-for="Giaban" class="form-control" />
+                <span asp-validation-for="Giaban" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Img" class="control-label">Ảnh nền</label>
+                <input asp-for="Img" class="form-control" type="file" id="file" itemid=@Context.Request.RouteValues["id"].ToString().Trim()/>
+                <span asp-validation-for="Img" class="text-danger"></span>
+                @if(@Model.Img==null){
+                   <div class="alert alert-warning" role="alert">
+                        Hãy cập nhật ảnh !
+</div>
+                }else
+                {
+                    <input type="hidden" asp-for="Img"/>
+                    <a href="~/assets/ImgThumb/@Model.Img" width="100px" height="100px" target="_blank"><img width="100px" height="100px" src="~/assets/ImgThumb/@Model.Img"></a>
+                }
+
+
+            </div>
+            <div class="form-group">
+                <label asp-for="Slton" class="control-label">Số lượng tồn</label>
+                <input asp-for="Slton" class="form-control" />
+                <span asp-validation-for="Slton" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Ngày tạo</label>
+                <input asp-for="Createdat" class="form-control" readonly/>
+                <span asp-validation-for="Createdat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedAt" class="control-label">Ngày cập nhật</label>
+                 <input asp-for="UpdatedAt" class="form-control" readonly/>
+                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="Mota" class="control-label">Mô tả</label>
+                 <textarea asp-for="Mota" class="form-control" placeholder="Nhập nội dung mô tả về sản phẩm"></textarea>
+                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section scripts
+{
+    <script>
+        var id = $("#file").attr("itemid")
+          const handleUploadFile=()=>
+      {
+          let formData = new FormData();
+          $("#file").change((e)=>
+          {
+              console.log("Change")
+              formData.append("file",e.target.files[0]);
+             fetch(`/Upload/${id}`, {
+  method: 'POST',
+  body: formData
+})
+.then(response => response.json())
+.then(result => {
+  if(result.success)
+  {
+        alert("Them Thanh Cong")
+        location.reload();
+  }
+  else
+  {
+       alert("Them That Bai")
+  }
+})
+.catch(error => {
+  console.error('Error:', error);
+});
+          })
+      }
+      handleUploadFile();
+      </script>
+}

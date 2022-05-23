@@ -1,0 +1,17 @@
+﻿@model QLTV2._0.Models.Hinhanh
+@{
+    ViewData["Title"] = "HinhAnh";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="center">
+    <h1>Cập nhật ảnh sản phẩm</h1>
+<form method="POST" enctype="multipart/form-data" class="center" action="/upload-anh-sach?masach=@Context.Request.Query["masach"]"  >
+    <div class="form-group" >
+        <label>CẬP NHẬT HÌNH ẢNH</label>
+        <input name="files" type="file" multiple/>
+    </div>
+    <button type="submit" class="btn btn-primary">OK</button>
+</form>
+
+</div>

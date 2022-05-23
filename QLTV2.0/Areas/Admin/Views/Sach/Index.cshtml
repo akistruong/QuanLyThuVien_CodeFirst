@@ -1,0 +1,126 @@
+﻿@using QLTV2._0.Helper
+@model PaggingService<QLTV2._0.Models.Sach>
+
+@{
+    ViewData["Title"] = "Quản trị sách";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<p>
+    <a asp-action="Create">Thêm mới</a>
+</p>
+<div class="table-responsive ">
+<table class="table">
+    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="?search=" method="GET">
+                        <div class="input-group">
+                            <input  name="search" type="text" class="form-control bg-light border-0 small" placeholder="Tìm kiếm tên sách hoạc mã sách" aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+    <thead>
+        <tr>
+            <th>
+               _ID
+            </th>
+            <th>
+                Tên sách
+            </th>
+            <th>
+                Giá bán
+            </th>
+            <th>
+               Hình ảnh
+            </th>
+            <th>
+                Số lượng tồn
+            </th>
+            <th>
+                Ngày tạo
+            </th>
+            <th>
+                Ngày cập nhật
+            </th>
+            <th>
+                Tên xuất bản
+            </th>
+            <th>
+                Mã phiếu
+            </th>
+            <th>
+                Tên thể loại
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdSach)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tensach)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Giaban)
+            </td>
+            <td>
+                @if(@item.Img==null)
+                {
+                            <label>Chưa cập nhật ảnh !</label>
+                        }else
+                        {
+                            <img width="50px" height="50px" src="~/assets/ImgThumb/@item.Img">
+                        }
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Slton)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Createdat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ManxbNavigation.Tennxb)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaphieunhapNavigation.Maphieunhap)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MatheloaiNavigation.Tentheloai)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Masach"><button class="btn btn-primary">Edit</button></a> 
+                <a asp-action="Details" asp-route-id="@item.Masach"><button class="btn btn-info">Chi tiết</button></a> 
+                <a asp-action="Delete" asp-route-id="@item.Masach"><button class="btn btn-danger">Xóa</button></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+         <li class="page-item"><a class="page-link"asp-action="Index" asp-route-page="@(Model.pageIndex-1)">Previous</a></li>
+            @{
+                int length =Model.count/4;
+                for(int i = 1; i <= length;i++)
+                        {
+                   <li class="page-item"><a class="page-link" href="?page=@i">@i</a></li>
+    
+                }
+                <li class="page-item"><a class="page-link" asp-action="Index" asp-route-page="@(Model.pageIndex+1)">Next</a></li>
+        } 
+         
+    
+
+  </ul>
+</nav>
+</div>

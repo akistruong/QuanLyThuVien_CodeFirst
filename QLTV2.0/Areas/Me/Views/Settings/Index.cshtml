@@ -1,0 +1,105 @@
+﻿@using System.Security.Claims
+@model QLTV2._0.Models.KhachHang
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Me/Views/Shared/_LayoutMe.cshtml";
+}
+
+<form  id="UpdateProfileForm" method="POST">
+
+  <div class="form-row">
+        <div class="form-group col-md-12">
+      <label for="inputEmail4">Họ và tên</label>
+      <input disabled  asp-for="TenKhachHang" class="form-control"   placeholder="Email" value="@Model?.TenKhachHang">
+    </div>
+    <div class="form-group col-md-12">
+      <label for="inputEmail4">Email</label>
+      <input disabled type="email" class="form-control" id="inputEmail4" placeholder="Email" value="@Context.User.FindFirst(ClaimTypes.Email)?.Value">
+    </div>   
+    <div class="form-group col-md-12">
+      <label for="inputEmail4">Số điện thoại</label>
+      <input asp-for="Sdt" class="form-control"  placeholder="Số điện thoại" value="@Model?.Sdt" >
+    </div>
+     @if(String.IsNullOrEmpty(Model?.DiaChi))
+            {
+                    <div class="col-md-12 form-group">
+                           
+            <label>Tỉnh, Thành phố</label>
+                            <select class="custom-select" id="province" name="provinces">
+                                 <option disabled selected> -- Chọn Tỉnh, Thành phố -- </option>
+                            </select>
+                        </div>
+                                                <div class="col-md-12 form-group" id="districtGroup">
+                            <label>Quận, Huyện</label>
+                             <select class="custom-select" id="district">
+                                   <option disabled selected> -- Chọn Quận, Huyện -- </option>
+                            </select>
+                        </div>
+                                                 <div class="col-md-12 form-group" id="wardGroup">
+                            <label>Phường,Xã</label>
+                             <select class="custom-select" id="ward">
+                                    <option disabled selected> -- Chọn Phường,Xã -- </option>
+                            </select>
+            </div>
+        }
+        else
+        {
+            var addressArr = Model?.DiaChi.Split(',');
+
+            <div class="col-md-12 form-group">
+                           
+            <label>Tỉnh, Thành phố</label>
+                            <select class="custom-select" id="province" name="provinces">
+                                 <option disabled selected> @addressArr[2] </option>
+                            </select>
+                        </div>
+                                                <div class="col-md-12 form-group" id="districtGroup">
+                            <label>Quận, Huyện</label>
+                             <select class="custom-select" id="district">
+                                   <option disabled selected>@addressArr[1] </option>
+                            </select>
+                        </div>
+                                                 <div class="col-md-12 form-group" id="wardGroup">
+                            <label>Phường,Xã</label>
+                             <select class="custom-select" id="ward">
+                                    <option disabled selected> @addressArr[0] </option>
+                            </select>
+                        </div>
+        }
+         
+  </div>
+  <div class="form-group">
+  </div>
+  <button type="submit" class="btn btn-primary btn-block" _id="@Model?.IdKh">Cập nhật</button>
+</form>
+@section scripts
+{
+    <script>
+         const getData=()=>
+         {
+             console.log($('#ward').find(":selected").text())
+         }
+        handleGetProvince(getData);
+        $("#UpdateProfileForm").submit((e)=>
+        {
+            e.preventDefault()
+            const province =$("#province").find(":selected").text();
+            const district =$("#district").find(":selected").text();
+            const ward =$('#ward').find(":selected").text();
+            const ten = $("input[name='TenKhachHang']").val();
+            const phone = $("input[name='Sdt']").val()
+            $.post("/me/thiet-lap?id=@Model?.IdKh",{
+            TenKhachHang:ten,
+            Sdt:phone,
+            DiaChi:ward + ", "+district+", "+province+"."
+            },(data,err)=>
+            {
+                if(data)
+                {
+                    window.location.replace("/")
+                }
+            })
+        })
+     
+    </script>
+}

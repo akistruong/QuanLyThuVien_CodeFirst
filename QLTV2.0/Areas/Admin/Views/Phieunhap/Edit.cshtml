@@ -1,0 +1,52 @@
+﻿@model QLTV2._0.Models.Phieunhap
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Phieunhap</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdPhieunhap" class="control-label"></label>
+                <input asp-for="IdPhieunhap" class="form-control" />
+                <span asp-validation-for="IdPhieunhap" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Maphieunhap" />
+            <div class="form-group">
+                <label asp-for="Soluongnhap" class="control-label"></label>
+                <input asp-for="Soluongnhap" class="form-control" />
+                <span asp-validation-for="Soluongnhap" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gianhap" class="control-label"></label>
+                <input asp-for="Gianhap" class="form-control" />
+                <span asp-validation-for="Gianhap" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Createdat" class="control-label"></label>
+                <input asp-for="Createdat" class="form-control" />
+                <span asp-validation-for="Createdat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedAt" class="control-label"></label>
+                <input asp-for="UpdatedAt" class="form-control" />
+                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
