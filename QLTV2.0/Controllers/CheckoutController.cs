@@ -75,6 +75,11 @@ namespace QLTV2._0.Controllers
                             chitiethoadon.Thanhtien = item.total;
                             chitiethoadon.Dongia = item.items.Giaban;
                             _context.Chitiethoadons.Add(chitiethoadon);
+                            var sach = _context.Saches.FirstOrDefault(x => x.Masach == chitiethoadon.Masach);
+                            if (sach != null)
+                            {
+                                sach.Slton -= chitiethoadon.Slmua;
+                            }
                         }
                         var cthdSave = _context.SaveChanges();
                         if (cthdSave > 0)
@@ -112,6 +117,11 @@ namespace QLTV2._0.Controllers
                         chitiethoadon.Thanhtien = item.total;
                         chitiethoadon.Dongia = item.items.Giaban;
                         _context.Chitiethoadons.Add(chitiethoadon);
+                        var sach = _context.Saches.FirstOrDefault(x => x.Masach == chitiethoadon.Masach);
+                        if (sach != null)
+                        {
+                            sach.Slton -= chitiethoadon.Slmua;
+                        }
                     }
                     var cthdSave = _context.SaveChanges();
                     if (cthdSave > 0)

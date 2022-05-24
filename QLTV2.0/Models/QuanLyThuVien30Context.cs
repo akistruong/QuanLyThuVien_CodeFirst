@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 #nullable disable
 
@@ -8,8 +9,10 @@ namespace QLTV2._0.Models
 {
     public partial class QuanLyThuVien30Context : DbContext
     {
-        public QuanLyThuVien30Context()
+        IConfiguration _configuration { get; }
+        public QuanLyThuVien30Context(IConfiguration configuration)
         {
+            _configuration = configuration;
         }
 
         public QuanLyThuVien30Context(DbContextOptions<QuanLyThuVien30Context> options)
@@ -38,8 +41,8 @@ namespace QLTV2._0.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-Q6F43CF;Database=QuanLyThuVien3.0;Trusted_Connection=True;");
+                IConfigurationSection ConnectStringsSection = _configuration.GetSection("ConnectStrings");
+                optionsBuilder.UseSqlServer(ConnectStringsSection["SqlString"]);
             }
         }
 
@@ -419,7 +422,7 @@ namespace QLTV2._0.Models
 
                 entity.Property(e => e.IdSach)
                     .ValueGeneratedOnAdd()
-                    .HasColumnName("ID_SACH");
+                    .HasColumnName("ID_SACH").Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
                 entity.Property(e => e.Img)
                     .HasColumnType("text")
@@ -549,7 +552,7 @@ namespace QLTV2._0.Models
                     .IsClustered(false);
 
                 entity.ToTable("TAIKHOAN");
-
+                entity.Property(e => e.phiship).HasColumnName("PhiShip").HasColumnType("money");
                 entity.Property(e => e.UserName)
                     .HasMaxLength(35)
                     .IsUnicode(false)

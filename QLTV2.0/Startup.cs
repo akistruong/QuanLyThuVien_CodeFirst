@@ -30,7 +30,9 @@ namespace QLTV2._0
             IConfigurationSection googleAuthNSection = Configuration.GetSection("Authentication:Google");
 
             // Thiết lập ClientID và ClientSecret để truy cập API google
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+); ;
             services.AddTransient<QuanLyThuVien30Context>();
             services.AddDistributedMemoryCache();
             services.AddSession(options =>

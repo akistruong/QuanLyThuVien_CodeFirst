@@ -10,7 +10,7 @@ using QLTV2._0.Models;
 namespace QLTV2._0.Migrations
 {
     [DbContext(typeof(QuanLyThuVien30Context))]
-    [Migration("20220520005805_Initial")]
+    [Migration("20220523130345_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

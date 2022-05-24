@@ -1,7 +1,7 @@
 ﻿@using QLTV2._0.Helper
 @model List<QLTV2._0.Models.Hoadon>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Đơn hàng";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -30,6 +30,7 @@
       <td>@FormatCurrency.Vnd(@item.TongHoaDon)</td>
       <td>@FormatCurrency.Vnd(@item.Phiship)</td>
       <td>@FormatCurrency.Vnd(@item.Discount)</td>
+      <td>@item.Soluong</td>
       <td>
           @if(item.Status==0)
                         {
@@ -44,10 +45,18 @@
                             <p>Đơn bị hủy</p>
                         }
                     </td>
-                    <td >
-                        <button class="btn btn-info ">Xác nhận</button>
+                    @if(item.Status==0)
+                    {
+                         <td >
+                        <button class="btn btn-info btnConfirm"  data-toggle="modal" data-target="#ConfirmModal" _order_id="@item.IdHoadon">Xác nhận</button>
                         <button class="btn btn-danger btnDelete"data-toggle="modal" _order_id="@item.IdHoadon"> Hủy đơn</button>
-                    </td>
+                        </td>
+                    }
+                    else
+                    {
+                        
+                    }
+
     </tr>
             }
            
@@ -74,10 +83,29 @@
     </div>
   </div>
 </div>
-
+    <div class="modal fade" id="ConfirmModal" tabindex="-1" role="dialog" aria-labelledby="ConfirmModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Xac nhan don hang</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+                    <a class="btn btn-primary" id="btnConfirmAccept">Xác nhận</a>
+                </div>
+            </div>
+        </div>
+    </div>
 @section scripts{
     <script>
-        let _id=0;
+       const handleDeleteOrder=()=>
+       {
+            let _id=0;
         $(".btnDelete").click((e)=>
         {
             _id = e.target.getAttribute("_order_id")
@@ -88,9 +116,37 @@
            
             $.post("/admin/DonHang/ConfirmDeleteOrder",{orderId:_id},(data,err)=>
         {
-            console.log(data)
+            if(data.success)
+            {
+                window.location.reload();
+            }
+            else
+            {
+                alert("Thao tác bị lỗi, vui lòng thử lại sau.")
+            }
         })
         })
-    
+       }
+       const handleConfirmOrder=()=>
+       {
+           let _id=0;
+                $(".btnConfirm").click((e)=>
+        {
+            _id = e.target.getAttribute("_order_id")
+        })
+        $("#btnConfirmAccept").click(()=>
+        {
+           
+            $.post("/admin/DonHang/ConfirmOrder",{orderId:_id},(data,err)=>
+        {
+              if(data.success)
+            {
+                window.location.reload();
+            }               
+        })
+        })
+       }
+       handleConfirmOrder();
+       handleDeleteOrder();
     </script>
 }

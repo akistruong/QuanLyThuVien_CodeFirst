@@ -1,0 +1,109 @@
+﻿@model IEnumerable<QLTV2._0.Models.Hoadon>
+@using Microsoft.EntityFrameworkCore 
+@using QLTV2._0.Helper
+@{
+    ViewData["Title"] = "Hóa đơn của tôi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+     <div class="table-responsive">
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#ID</th>
+      <th scope="col">Sản phẩm đã đặt</th>
+      <th scope="col">Ngày đặt hàng</th>
+      <th scope="col">Tổng hóa đơn</th>
+      <th scope="col">Phí giao hàng</th>
+      <th scope="col">Số tiền đã giảm</th>
+      <th scope="col">Tổng số lượng</th>
+      <th scope="col">Trạng thái đơn hàng</th>
+    </tr>
+  </thead>
+  <tbody>
+      @foreach(var item in Model)
+            {
+                 <tr>
+      <th scope="row">@item.IdHoadon</th>
+      <th scope="row">
+            <button class="btn btn-primary btnViewDetailOrder" _id_order="@item.IdHoadon">Xem</button>
+                        </th>
+      <td>@item.Createdat</td>
+      <td>@FormatCurrency.Vnd(@item.TongHoaDon)</td>
+      <td>@FormatCurrency.Vnd(@item.Phiship is null?0:@item.Phiship)</td>
+      <td>@FormatCurrency.Vnd(@item.Discount)</td>
+      <td>@item.Soluong</td>
+      <td>
+          @if(item.Status==0)
+                        {
+                            <p class="text-primary">Đang chờ xác nhận</p>
+                        }
+                        else if(item.Status==1)
+                        {
+                            <p>Đã xác nhận</p>
+                        }
+                        else
+                        {
+                            <p>Đơn bị hủy</p>
+                        }
+                    </td>
+
+    </tr>
+
+            }
+           
+   
+  </tbody>
+</table>
+</div>   
+</div>
+<div class="modal fade" id="DetailModal" tabindex="-1"  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Sản phẩm đã đặt</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body d-flex" id="DetailModalContent" >
+    
+      </div>
+      
+    </div>
+  </div>
+</div>
+@section scripts
+{
+    <script>
+        const handleViewDetailOrder=()=>
+        {
+            $(".btnViewDetailOrder").click((e)=>
+            {
+                $.post("MyOrder/DetailOrder",{id:e.target.getAttribute("_id_order")},(data,err)=>
+            {
+                if(data)
+                {
+                     $("#DetailModalContent").html('')
+                    data.forEach(item=>
+                    {
+                        $("#DetailModalContent").append(`
+                    
+                    <div class="card" style="width: 18rem; ">
+  <img class="card-img-top img-thumbnail" src="/assets/ImgThumb/${item.masachNavigation.img}"  >
+  <div class="card-body">
+    <h5 class="card-title">${item.masachNavigation.tensach}</h5>
+    <p class="card-text">${formatVnd(item.masachNavigation.giaban)}</p>
+    <a href="/san-pham/${item.masachNavigation.idSach}/${formatSlug(item.masachNavigation.tensach)}" class="btn btn-primary">Xem chi tiết</a>
+  </div>
+</div>`)
+                    })
+                    $("#DetailModal").modal('show');
+                }
+            })
+            })
+        }
+        handleViewDetailOrder();
+    </script>
+}

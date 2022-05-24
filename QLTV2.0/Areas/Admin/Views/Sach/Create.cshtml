@@ -18,15 +18,43 @@
             </div>
             <div class="form-group">
                 <label asp-for="Manxb" class="control-label">Tên nhà xuất bản</label>
-                <select asp-for="Manxb" class ="form-control" asp-items="ViewBag.Manxb"></select>
+                @{
+                    var  data = ViewBag.Manxb;
+                    var test = data;
+                }
+                    @if(ViewBag.Manxb == null)
+                {
+                    <p class="alert-warning">Hiện chưa có nhà xuất bản nào <a asp-area="admin" asp-controller="Nxb" asp-action="create">Vui lòng thêm tại đây</a> </p>
+                }
+                else
+                {
+                     <select asp-for="Manxb" class ="form-control" asp-items="ViewBag.Manxb"></select>
+                }
+
             </div>
             <div class="form-group">
                 <label asp-for="Maphieunhap" class="control-label">Mã phiếu nhập</label>
-                <select asp-for="Maphieunhap" class ="form-control" asp-items="ViewBag.Maphieunhap"></select>
+                @if(ViewBag.Maphieunhap == null)
+                {
+                    <p class="alert-warning">Hiện chưa có mã phiếu nhập nào <a asp-area="admin" asp-controller="Theloai" asp-action="create">Vui lòng thêm tại đây</a> </p>
+                }
+                else
+                {
+                     <select asp-for="Maphieunhap" class ="form-control" asp-items="ViewBag.Maphieunhap"></select>
+                }
+                
             </div>
             <div class="form-group">
                 <label asp-for="Matheloai" class="control-label">Tên thể loại</label>
-                <select asp-for="Matheloai" class ="form-control" asp-items="ViewBag.Matheloai"></select>
+                  @if(ViewBag.Maphieunhap == null)
+                {
+                    <p class="alert-warning">Hiện chưa có thể loại nào <a asp-area="admin" asp-controller="Maphieu" asp-action="create">Vui lòng thêm tại đây</a> </p>
+                }
+                else
+                {
+                     <select asp-for="Matheloai" class ="form-control" asp-items="ViewBag.Matheloai"></select>
+                }
+               
             </div>
             <div class="form-group">
                 <label asp-for="Tensach" class="control-label">Tên sách</label>

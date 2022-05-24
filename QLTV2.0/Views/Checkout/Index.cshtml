@@ -4,7 +4,13 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
     decimal feeShip = 0;
+    int districtCode=0;
     Taikhoan kh = ViewBag?.KhachHang;
+    if(kh is not null)
+    {
+        var data =kh.IdKhNavigation.DiaChi.Split(",")[1];
+        districtCode = Int32.Parse(data.Split("-")[0]);
+    }
 }
 <div class="container-fluid pt-5">
         <div class="row px-xl-5">
@@ -117,8 +123,39 @@
                 let ward;
                 let finalPrice;
                 let shipfee;
-                let idKh = $("input[name='idKh']").val()
-                console.log({idKh});
+                let idKh = $("input[name='idKh']").val()    
+            const costWithAccount=(district_code)=>
+            {
+                   $.ajax
+  ({
+      type: "GET",
+      beforeSend: (request) => {
+          request.setRequestHeader("token", "4116bad7-d01f-11ec-ac32-0e0f5adc015a");
+      },
+      url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+      data: {
+          "service_type_id": 2,
+          "insurance_value":@Model.Sum(x => x.total),
+  "coupon": null,
+      "from_district_id": 1574,
+          "to_district_id": district_code,
+              "to_ward_code": 20314,
+                  "height": 20,
+                      "length": 20,
+                          "weight": 20 *@Model.Sum(x => x.qty),
+                "width":15,
+}, success: (res) => {
+
+shipfee = res.data.total
+finalPrice = Number(@Model.Sum(x => x.total)) + Number(shipfee);
+const finalPriceConvertVnd = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(finalPrice);
+const ShipFeeConvertVnd = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(shipfee);
+$("#finalPrice").html(finalPriceConvertVnd);
+$("#ship_fee").html(`${ShipFeeConvertVnd}`);
+}
+    })
+    
+            }
             const cost =()=>
             {
                 let district_id = $('#district').find(":selected").val();
@@ -152,6 +189,7 @@ $("#ship_fee").html(`${ShipFeeConvertVnd}`);
 }
     })
             }
+
             const handleSubmitOrder=()=>
             {
                 
@@ -163,7 +201,6 @@ $("#ship_fee").html(`${ShipFeeConvertVnd}`);
                 const Sdt = document.getElementById("Sdt")?.value;
                 
                     $.post("/dat-hang",{
-                        Std:"312313",
                         TenKhachHang:`${Honguoimua} ${Tennguoimua}`,
                         Sdt,
                         DiaChi:`${ward}, ${district}, ${province}`,
@@ -176,17 +213,18 @@ $("#ship_fee").html(`${ShipFeeConvertVnd}`);
                         if(data.success)
                         {
                             alert(data.msg)
+                            window.location.replace("/");
                         }
                     })
                 })
             }
 
          
-        
         handleHideElement($("#districtGroup"),"none")
         handleHideElement($("#wardGroup"),"none")
         handleGetProvince(cost);
         handleSubmitOrder();
+        costWithAccount( @districtCode)
         //;
         
         </script>

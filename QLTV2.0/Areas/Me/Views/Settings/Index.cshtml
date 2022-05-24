@@ -45,26 +45,25 @@
         else
         {
             var addressArr = Model?.DiaChi.Split(',');
-
             <div class="col-md-12 form-group">
                            
-            <label>Tỉnh, Thành phố</label>
-                            <select class="custom-select" id="province" name="provinces">
-                                 <option disabled selected> @addressArr[2] </option>
-                            </select>
-                        </div>
-                                                <div class="col-md-12 form-group" id="districtGroup">
-                            <label>Quận, Huyện</label>
-                             <select class="custom-select" id="district">
-                                   <option disabled selected>@addressArr[1] </option>
-                            </select>
-                        </div>
-                                                 <div class="col-md-12 form-group" id="wardGroup">
-                            <label>Phường,Xã</label>
-                             <select class="custom-select" id="ward">
-                                    <option disabled selected> @addressArr[0] </option>
-                            </select>
-                        </div>
+                <label>Tỉnh, Thành phố</label>
+                                <select class="custom-select" id="province" name="provinces">
+                                     <option disabled selected> @addressArr[2] </option>
+                                </select>
+                            </div>
+                                                    <div class="col-md-12 form-group" id="districtGroup">
+                                <label>Quận, Huyện</label>
+                                 <select class="custom-select" id="district">
+                                       <option disabled selected value="@addressArr[1].Split("-")[0]">@addressArr[1].Split("-")[1]</option>
+                                </select>
+                            </div>
+                                                     <div class="col-md-12 form-group" id="wardGroup">
+                                <label>Phường,Xã</label>
+                                 <select class="custom-select" id="ward">
+                                        <option disabled selected> @addressArr[0] </option>
+                                </select>
+                            </div>
         }
          
   </div>
@@ -84,6 +83,7 @@
         {
             e.preventDefault()
             const province =$("#province").find(":selected").text();
+            const districtCode =$("#district").find(":selected").val();
             const district =$("#district").find(":selected").text();
             const ward =$('#ward').find(":selected").text();
             const ten = $("input[name='TenKhachHang']").val();
@@ -91,7 +91,7 @@
             $.post("/me/thiet-lap?id=@Model?.IdKh",{
             TenKhachHang:ten,
             Sdt:phone,
-            DiaChi:ward + ", "+district+", "+province+"."
+            DiaChi:ward + ", "+districtCode+"-"+district+", "+province+"."
             },(data,err)=>
             {
                 if(data)

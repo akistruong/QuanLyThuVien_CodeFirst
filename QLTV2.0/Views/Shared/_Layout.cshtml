@@ -70,23 +70,18 @@
                 </a>
             </div>
             <div class="col-lg-6 col-6 text-left">
-                <form action="">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                        <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm" id="search_books">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>
                             </span>
                         </div>
-                        <ul style="position:absolute; z-index:3; top:100%; left:0; right:0; background-color:var(--primary); padding:10px; border-radius:4px;">
-                            <li>
-                                <a href="#">ITEM </a>
-                            </li>
-                           
+                        <ul style="position:absolute; z-index:3; top:100%; left:0; right:0; background-color:var(--primary);  " id="search_result">
+                                           
                         </ul>
                     </div>
                      
-                </form>
             </div>
             <div class="col-lg-3 col-6 text-right">
                 <a href="" class="btn border">
@@ -109,12 +104,16 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                        @if(!User.Identity.IsAuthenticated||User.IsInRole("1"))
+                        @if(!User.Identity.IsAuthenticated)
                         {
                              <div class="navbar-nav ml-auto py-0">
                             <a href="/dang-nhap" class="nav-item nav-link">Đăng nhập</a>
                             <a href="/dang-ky" class="nav-item nav-link">Đăng ký</a>
-                        </div>
+                            </div>
+                        }
+                        else if(User.IsInRole("1"))
+                        {
+                            
                         }
                         else
                         {
@@ -141,7 +140,7 @@
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Thiết lập
                                 </a>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="/me/my-orders?id=@Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Hóa đơn
                                 </a>
@@ -160,8 +159,8 @@
         </div>
     </div>
         
-
-       @RenderBody()
+            @RenderBody()
+      
        <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
         <div class="row px-xl-5 pt-5">
             <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
@@ -240,6 +239,34 @@
     <!-- Template Javascript -->
     <script src="~/js/main.js" asp-append-version="true"></script>
     <script src="~/js/site.js"  type="text/javascript" asp-append-version="true"></script>
+    <script>
+        $("#search_books").keyup((e)=>
+        {
+            $.get("/search?key="+e.target.value,(data,err)=>
+        {
+            if(data&&data.length>0)
+            {
+                data.forEach(item=>
+                {
+                    return   $("#search_result").html(`
+                
+                                               <li style=" display:flex; height:40px; align-items:center; justify-content: space-around; margin:10px 0 ;">
+                                <img src="/assets/ImgThumb/${item.img}" height="100%">
+                            <a target="_blank" href="/san-pham/${item.idSach}/${formatSlug(item.tensach)}" class="text-secondary m-5">${item.tensach}</a>    
+                            <div>${formatVnd(item.giaban)}</div>
+                           </li> 
+                
+                `)
+                })
+              
+            }else
+            {
+                $("#search_result").html('')
+            }
+        })
+        })
+    
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

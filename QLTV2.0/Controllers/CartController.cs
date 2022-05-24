@@ -39,7 +39,7 @@ namespace QLTV2._0.Controllers
             
             if (items != null)
             {
-                var sach = await _context.Saches.FirstOrDefaultAsync(x=>x.IdSach==id);
+                var sach = await _context.Saches.Where(x=>x.Slton>0).FirstOrDefaultAsync(x=>x.IdSach==id);
                 Stream stream = new MemoryStream(items);
                 if (sach is not null)
                 {

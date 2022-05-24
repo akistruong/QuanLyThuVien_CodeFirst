@@ -12,7 +12,6 @@ namespace QLTV2._0.Models
             ChiTietCoupons = new HashSet<ChiTietCoupon>();
             Chitiethoadons = new HashSet<Chitiethoadon>();
         }
-
         public int IdHoadon { get; set; }
         public DateTime? Createdat { get; set; }
         public DateTime? UpdatedAt { get; set; }

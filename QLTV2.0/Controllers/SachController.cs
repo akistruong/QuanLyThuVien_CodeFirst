@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using QLTV2._0.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace QLTV2._0.Controllers
 {
@@ -17,8 +18,8 @@ namespace QLTV2._0.Controllers
         [Route("/san-pham/{id}/{slug}")]
         public IActionResult Index(int id)
         {
-            ViewData["imgs"] = _context.Hinhanhs.Include(x=>x.MasachNavigation).Where(x=>x.MasachNavigation.IdSach==id).ToList();
-            var res = _context.Saches.FirstOrDefault(x=>x.IdSach==id);
+            
+            var res = _context.Saches.Include(x=>x.Chitiettacgia).ThenInclude(x=>x.IdTacgiaNavigation).Include(x=>x.ManxbNavigation).FirstOrDefault(x=>x.IdSach==id);
             if(res==null)
             {
                 return NotFound();
@@ -26,6 +27,19 @@ namespace QLTV2._0.Controllers
             else
             {
                 return View(res);
+            }
+        }
+        [Route("/search")]
+        public async Task< IActionResult> Search(string key)
+        {
+            var values = _context.Saches.Where(x => x.Tensach.Contains(key));
+            if(values is not null )
+            {
+                return Json(values);
+            }
+           else
+            {
+                return Ok();
             }
         }
     }

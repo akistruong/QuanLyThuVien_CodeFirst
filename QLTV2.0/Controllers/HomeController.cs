@@ -23,6 +23,7 @@ namespace QLTV2._0.Controllers
         public IActionResult Index()
         {
             var productsNew = _context.Saches.OrderByDescending(x => x.Createdat).Take(5).ToList();
+            var 
             ViewData["productsNew"] = productsNew;
             return View();
         }
