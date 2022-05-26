@@ -100,9 +100,9 @@ namespace QLTV2._0.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["Manxb"] = new SelectList(_context.Nxbs, "Manxb", "Manxb", sach.Manxb);
+            ViewData["Manxb"] = new SelectList(_context.Nxbs, "Manxb", "Tennxb", sach.Manxb);
             ViewData["Maphieunhap"] = new SelectList(_context.Phieunhaps, "Maphieunhap", "Maphieunhap", sach.Maphieunhap);
-            ViewData["Matheloai"] = new SelectList(_context.Theloais, "Matheloai", "Matheloai", sach.Matheloai);
+            ViewData["Matheloai"] = new SelectList(_context.Theloais, "Matheloai", "Tentheloai", sach.Matheloai);
             return View(sach);
         }
 

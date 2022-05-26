@@ -36,6 +36,12 @@ namespace QLTV2._0.Controllers
             }
             
         }
+        [Route("dang-ky")]
+        [HttpGet]
+        public async Task<IActionResult> SignUp()
+        {
+            return View();
+        }
         [Route("dang-nhap")]
         [HttpPost]
         public async Task<IActionResult> Login(Taikhoan body)

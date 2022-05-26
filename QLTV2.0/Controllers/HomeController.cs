@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using QLTV2._0.Models;
 using System;
@@ -22,10 +23,11 @@ namespace QLTV2._0.Controllers
         }
         public IActionResult Index()
         {
-            var productsNew = _context.Saches.OrderByDescending(x => x.Createdat).Take(5).ToList();
-            var 
+            var productsNew = _context.Saches.OrderByDescending(x => x.Createdat).Where(x=>x.Slton>0).Take(5).ToList();
+            var productsHot = _context.Chitiethoadons.Include(x => x.MasachNavigation).OrderByDescending(x=>x.Slmua).ToList().GroupBy(x => x.Masach).Select(x=>x.First()).Take(8).ToList();
             ViewData["productsNew"] = productsNew;
-            return View();
+            ViewData["productsHot"] = productsHot;
+                return View();
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int? statusCode)

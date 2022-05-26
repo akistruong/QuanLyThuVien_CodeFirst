@@ -20,6 +20,8 @@ namespace QLTV2._0.Controllers
         {
             
             var res = _context.Saches.Include(x=>x.Chitiettacgia).ThenInclude(x=>x.IdTacgiaNavigation).Include(x=>x.ManxbNavigation).FirstOrDefault(x=>x.IdSach==id);
+            var mayLike = _context.Saches.Where(x => x.Matheloai == res.Matheloai).ToList();
+            ViewData["mayLike"] = mayLike;
             if(res==null)
             {
                 return NotFound();

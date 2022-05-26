@@ -18,10 +18,21 @@ namespace QLTV2._0.Areas.Admin.Controllers
         }
 
         [Route("Admin/don-hang")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? status)
         {
-          
-            return View(await _context.Hoadons.ToListAsync());
+            var orders = await _context.Hoadons.Where(x=>x.Status==0).ToListAsync();
+            if (status is not null)
+            {
+                if(status == 1)
+                {
+                    orders = await _context.Hoadons.Where(x=>x.Status==1).ToListAsync();
+                }
+                else
+                {
+                    orders = await _context.Hoadons.Where(x => x.Status == 0).ToListAsync();
+                }
+            }
+            return View(orders);
         }
         [HttpPost]
         public async Task<IActionResult> ConfirmDeleteOrder(int orderId)

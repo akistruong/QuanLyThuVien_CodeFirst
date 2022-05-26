@@ -4,8 +4,15 @@
     ViewData["Title"] = "Đơn hàng";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
-
-<h1>Index</h1>
+<form action="don-hang">
+     <label>Sắp xếp theo</label>
+<select name="status" class="form-control" onchange="this.form.submit()">
+     <option >Sắp xếp theo</option>
+     <option value="0" >Chưa xác nhận</option>
+    
+      <option value="1">Đã xác nhận</option>
+    </select>
+</form>
 
 <div class="table-responsive">
     <table class="table">
@@ -22,7 +29,9 @@
     </tr>
   </thead>
   <tbody>
-      @foreach(var item in Model)
+   @if(Model is not null )
+            {
+                   @foreach(var item in Model)
             {
                  <tr>
       <th scope="row">@item.IdHoadon</th>
@@ -59,7 +68,8 @@
 
     </tr>
             }
-           
+            }
+
    
   </tbody>
 </table>
@@ -148,5 +158,6 @@
        }
        handleConfirmOrder();
        handleDeleteOrder();
+       
     </script>
 }

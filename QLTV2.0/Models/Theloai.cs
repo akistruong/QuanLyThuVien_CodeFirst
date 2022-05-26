@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -13,6 +14,7 @@ namespace QLTV2._0.Models
         }
 
         public int IdTheloai { get; set; }
+        [Key]
         public string Matheloai { get; set; }
         public string Tentheloai { get; set; }
 

@@ -125,7 +125,7 @@ namespace QLTV2._0.Models
 
                 entity.HasOne(d => d.MasachNavigation)
                     .WithMany(p => p.Chitiethoadons)
-                    .HasForeignKey(d => d.Masach)
+                    .HasForeignKey(d => d.Masach).OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_cthd_MASACH");
             });
 
