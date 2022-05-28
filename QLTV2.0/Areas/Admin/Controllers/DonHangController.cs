@@ -20,16 +20,16 @@ namespace QLTV2._0.Areas.Admin.Controllers
         [Route("Admin/don-hang")]
         public async Task<IActionResult> Index(int? status)
         {
-            var orders = await _context.Hoadons.Where(x=>x.Status==0).ToListAsync();
+            var orders = await _context.Hoadons.Include(x=>x.IdKhNavigation).Where(x=>x.Status==0).ToListAsync();
             if (status is not null)
             {
                 if(status == 1)
                 {
-                    orders = await _context.Hoadons.Where(x=>x.Status==1).ToListAsync();
+                    orders = await _context.Hoadons.Include(x => x.IdKhNavigation).Where(x=>x.Status==1).ToListAsync();
                 }
                 else
                 {
-                    orders = await _context.Hoadons.Where(x => x.Status == 0).ToListAsync();
+                    orders = await _context.Hoadons.Include(x=>x.IdKhNavigation).Where(x => x.Status == 0).ToListAsync();
                 }
             }
             return View(orders);

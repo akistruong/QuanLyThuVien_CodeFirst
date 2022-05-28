@@ -14,19 +14,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.IdPhieunhap)
+                #ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Soluongnhap)
+                Số lượng nhập
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Gianhap)
+                Giá nhập
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Createdat)
+                Ngày tạo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UpdatedAt)
+                Ngày cập nhật
             </th>
             <th></th>
         </tr>
@@ -50,9 +50,9 @@
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Maphieunhap">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Maphieunhap">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Maphieunhap">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Maphieunhap">Chỉnh sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.Maphieunhap">Chi Tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.Maphieunhap">Xóa</a>
             </td>
         </tr>
 }

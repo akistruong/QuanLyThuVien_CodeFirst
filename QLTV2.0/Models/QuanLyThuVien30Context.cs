@@ -470,7 +470,7 @@ namespace QLTV2._0.Models
                 entity.HasOne(d => d.MaphieunhapNavigation)
                     .WithMany(p => p.Saches)
                     .HasForeignKey(d => d.Maphieunhap)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_sach_phieunhap");
 
                 entity.HasOne(d => d.MatheloaiNavigation)
@@ -598,7 +598,7 @@ namespace QLTV2._0.Models
 
                 entity.Property(e => e.IdTheloai)
                     .ValueGeneratedOnAdd()
-                    .HasColumnName("ID_THELOAI");
+                    .HasColumnName("ID_THELOAI").Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
                 entity.Property(e => e.Tentheloai)
                     .HasMaxLength(30)
