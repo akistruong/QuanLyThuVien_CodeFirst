@@ -4,10 +4,9 @@
     ViewData["Title"] = "Đơn hàng";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
-<form action="don-hang">
+<form action="don-hang" id="statusForm" >
      <label>Sắp xếp theo</label>
-<select name="status" class="form-control" onchange="this.form.submit()">
-     <option >Sắp xếp theo</option>
+<select name="status" class="form-control" id="statusSelect">
      <option value="0" >Chưa xác nhận</option>
       <option value="1">Đã xác nhận</option>
     </select>
@@ -19,6 +18,7 @@
     <tr>
       <th scope="col">#ID</th>
       <th scope="col">Ngày đặt hàng</th>
+      <th scope="col">Số điện thoại</th>
       <th scope="col">Tổng hóa đơn</th>
       <th scope="col">Phí giao hàng</th>
       <th scope="col">Số tiền đã giảm</th>
@@ -35,6 +35,7 @@
                  <tr>
       <th scope="row">@item.IdHoadon</th>
       <td>@item.Createdat</td>
+      <td  >@item.IdKhNavigation.Sdt</td>
       <td>@FormatCurrency.Vnd(@item.TongHoaDon)</td>
       <td>@FormatCurrency.Vnd(@item.Phiship)</td>
       <td>@FormatCurrency.Vnd(@item.Discount)</td>
@@ -157,6 +158,10 @@
        }
        handleConfirmOrder();
        handleDeleteOrder();
-       
+       $("#statusSelect").change((e)=>
+       {
+           e.preventDefault();
+           $("#statusForm").submit();
+       })
     </script>
 }

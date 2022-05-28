@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -14,6 +15,7 @@ namespace QLTV2._0.Models
 
         public int IdTaikhoan { get; set; }
         public string UserName { get; set; }
+        [DataType(DataType.Password)]
         public string Password { get; set; }
         public string Salt { get; set; }
         public int? Role { get; set; }

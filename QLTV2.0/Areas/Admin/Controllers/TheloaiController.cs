@@ -58,9 +58,18 @@ namespace QLTV2._0.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(theloai);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var tl = _context.Theloais.FirstOrDefault(x => x.Matheloai == theloai.Matheloai);
+                if(tl is  null)
+                {
+                    _context.Add(theloai);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return View();
+                }
+               
             }
             return View(theloai);
         }
