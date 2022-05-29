@@ -27,7 +27,7 @@ namespace QLTV2._0.Areas.Admin.Controllers
         {
 
             page = page == 0 ? 1 : page;
-            var sachs = await _context.Saches.Include(x=>x.MaphieunhapNavigation).Include(x=>x.ManxbNavigation).Include(x=>x.MatheloaiNavigation).ToListAsync();
+            var sachs = await _context.Saches.Include(x=>x.MaphieunhapNavigation).Include(x=>x.ManxbNavigation).Include(x=>x.MatheloaiNavigation).OrderByDescending(x=>x.Createdat).ToListAsync();
             if(!String.IsNullOrEmpty(search))
             {
                 sachs = sachs.FindAll(x => x.Tensach.ToLower().Contains(search.ToLower())||x.Masach.ToLower().Trim()==search.ToLower().Trim()).ToList();
@@ -111,7 +111,7 @@ namespace QLTV2._0.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Masach,Manxb,Maphieunhap,Matheloai,Tensach,Giaban,Img,Slton,Createdat,UpdatedAt,Mota")] Sach sach)
+        public async Task<IActionResult> Edit(string id, [Bind("Masach,Manxb,Maphieunhap,Matheloai,Tensach,Giaban,Img,Slton,Createdat,UpdatedAt,Mota,Giaban")] Sach sach)
         {
             if (id != sach.Masach)
             {

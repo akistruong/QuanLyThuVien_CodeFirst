@@ -1,4 +1,4 @@
-﻿
+﻿@using QLTV2._0.Helper
 @model List<QLTV2._0.Models.Theloai>
          <div class="col-lg-3 d-none d-lg-block" style="z-index:30;">
                 <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
@@ -9,7 +9,7 @@
                     <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
                         @foreach(var item in Model)
             {
-                  <a href="~/danh-muc/@item.Matheloai" class="nav-item nav-link">@item.Tentheloai</a>
+                  <a href="~/danh-muc/@item.IdTheloai/@CustomSlug.Slugify(item.Tentheloai)" class="nav-item nav-link">@item.Tentheloai</a>
             }
           
                 

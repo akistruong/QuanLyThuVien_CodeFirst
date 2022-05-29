@@ -67,7 +67,7 @@
                 @Html.DisplayFor(modelItem => item.Tensach)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Giaban)
+                @FormatCurrency.Vnd(item.Giaban)
             </td>
             <td>
                 @if(@item.Img==null)
@@ -98,7 +98,7 @@
                 @Html.DisplayFor(modelItem => item.MatheloaiNavigation.Tentheloai)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Masach"><button class="btn btn-primary">Edit</button></a> 
+                <a asp-action="Edit" asp-route-id="@item.Masach"><button class="btn btn-primary">Chỉnh sửa</button></a> 
                 <a asp-action="Details" asp-route-id="@item.Masach"><button class="btn btn-info">Chi tiết</button></a> 
                 <a asp-action="Delete" asp-route-id="@item.Masach"><button class="btn btn-danger">Xóa</button></a>
             </td>

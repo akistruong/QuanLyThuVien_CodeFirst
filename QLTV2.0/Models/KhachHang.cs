@@ -10,7 +10,6 @@ namespace QLTV2._0.Models
         public KhachHang()
         {
             Hoadons = new HashSet<Hoadon>();
-            TaiKhoanGoogles = new HashSet<TaiKhoanGoogle>();
             Taikhoans = new HashSet<Taikhoan>();
         }
 
@@ -22,7 +21,6 @@ namespace QLTV2._0.Models
         public string DiaChi { get; set; }
 
         public virtual ICollection<Hoadon> Hoadons { get; set; }
-        public virtual ICollection<TaiKhoanGoogle> TaiKhoanGoogles { get; set; }
         public virtual ICollection<Taikhoan> Taikhoans { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using QLTV2._0.Models;
 using System;
 using System.Linq;
@@ -14,17 +15,17 @@ namespace QLTV2._0.Controllers
             _context = context;
         }
 
-        [Route("danh-muc/{id}")]
-        public IActionResult Index(string id)
+        [Route("danh-muc/{id}/{slug}")]
+        public IActionResult Index()
         {
           
             return View();
         }
         [HttpGet]
         [Route("/api/GetBookByCategory")]
-        public IActionResult GetBookByCategory(string id,string? price)
+        public IActionResult GetBookByCategory(int id,string? price)
         {
-            var sachs = _context.Saches.Where(x => x.Matheloai == id);
+            var sachs = _context.Saches.Include(x=>x.MatheloaiNavigation).Where(x => x.MatheloaiNavigation.IdTheloai == id);
             if(sachs is not null)
             {
                 if(!String.IsNullOrEmpty(price))
@@ -34,11 +35,11 @@ namespace QLTV2._0.Controllers
                     {
                         decimal priceEnd = Decimal.Parse(prices[1]);
                         decimal priceStart = Decimal.Parse(prices[0]);
-                        sachs = sachs.Where(x => x.Giaban >= priceStart).Where(x => x.Giaban <= priceEnd);
+                        sachs = sachs.Where(x => x.Giaban > priceStart).Where(x => x.Giaban <= priceEnd);
                     }
                     else
                     {
-                        sachs = _context.Saches.Where(x => x.Matheloai == id);
+                        sachs = _context.Saches.Include(x => x.MatheloaiNavigation).Where(x => x.MatheloaiNavigation.IdTheloai == id);
                        
                     }
                    

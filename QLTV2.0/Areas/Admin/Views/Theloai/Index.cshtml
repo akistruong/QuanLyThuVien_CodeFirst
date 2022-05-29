@@ -1,23 +1,22 @@
 ﻿@model IEnumerable<QLTV2._0.Models.Theloai>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Danh sách thể loại";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Tạo mới</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.IdTheloai)
+               ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tentheloai)
+                Tên thể loại
             </th>
             <th></th>
         </tr>
@@ -32,9 +31,8 @@
                 @Html.DisplayFor(modelItem => item.Tentheloai)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Matheloai">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Matheloai">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Matheloai">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Matheloai">Chỉnh sửa</a> |
+                <a asp-action="Delete" asp-route-id="@item.Matheloai">Xóa</a>
             </td>
         </tr>
 }

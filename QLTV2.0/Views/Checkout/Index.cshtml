@@ -6,7 +6,7 @@
     decimal feeShip = 0;
     int districtCode=0;
     Taikhoan kh = ViewBag?.KhachHang;
-    if(kh is not null)
+    if(kh is not null&&User.IsInRole("0"))
     {
         var data =kh.IdKhNavigation.DiaChi.Split(",")[1];
         districtCode = Int32.Parse(data.Split("-")[0]);
@@ -18,9 +18,21 @@
         {
             
             var data = kh;
-            <div class="col-lg-8">
+            if(kh.IdKhNavigation is not null)
+            {
+                  if(kh.IdKhNavigation.DiaChi is null ||kh.IdKhNavigation.Sdt is null )
+            {
+                <p class="text-danger">Thông tin khách hàng chưa được cập nhật, vui lòng cập nhật số điện thoại và địa chỉ để đặt hàng. <a href="/me/settings">Cập nhật tại đây</a> </p>
+            }
+            else
+            {
+                 <div class="col-lg-8">
             <p>Đơn hàng của thành viên <a href="#">@kh?.IdKhNavigation?.TenKhachHang</a> sẽ được vận chuyển đến địa chỉ <a href="#">@kh?.IdKhNavigation?.DiaChi</a> </p>
             </div>
+            }
+            }
+          
+           
         }
         else
         {
@@ -66,7 +78,9 @@
 
             </div>
         }
-        <div class="col-lg-4">
+         @if(kh.IdKhNavigation.DiaChi is not null ||kh.IdKhNavigation.Sdt is not  null )
+            {
+                 <div class="col-lg-4">
                 <div class="card border-secondary mb-5">
                     <form class="mb-5" action="">
                     <div class="input-group">
@@ -113,6 +127,8 @@
                 </div>
 
             </div>
+            }
+       
         </div>
     </div>
     @section scripts

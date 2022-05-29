@@ -33,7 +33,6 @@ namespace QLTV2._0.Models
         public virtual DbSet<Sach> Saches { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<Tacgia> Tacgia { get; set; }
-        public virtual DbSet<TaiKhoanGoogle> TaiKhoanGoogles { get; set; }
         public virtual DbSet<Taikhoan> Taikhoans { get; set; }
         public virtual DbSet<Theloai> Theloais { get; set; }
 
@@ -352,7 +351,7 @@ namespace QLTV2._0.Models
 
                 entity.Property(e => e.IdNxb)
                     .ValueGeneratedOnAdd()
-                    .HasColumnName("ID_NXB");
+                    .HasColumnName("ID_NXB").Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
                 entity.Property(e => e.Sdt)
                     .HasMaxLength(12)
@@ -389,7 +388,7 @@ namespace QLTV2._0.Models
 
                 entity.Property(e => e.IdPhieunhap)
                     .ValueGeneratedOnAdd()
-                    .HasColumnName("ID_PHIEUNHAP");
+                    .HasColumnName("ID_PHIEUNHAP").Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
                 entity.Property(e => e.Soluongnhap).HasColumnName("SOLUONGNHAP");
 
@@ -521,30 +520,7 @@ namespace QLTV2._0.Models
                     .HasColumnName("TENTACGIA");
             });
 
-            modelBuilder.Entity<TaiKhoanGoogle>(entity =>
-            {
-                entity.HasKey(e => e.IdGoogle)
-                    .HasName("PK__TaiKhoan__26387A7E113CA94B");
 
-                entity.ToTable("TaiKhoanGoogle");
-
-                entity.Property(e => e.IdGoogle)
-                    .HasMaxLength(30)
-                    .IsUnicode(false)
-                    .HasColumnName("id_google")
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id");
-
-                entity.Property(e => e.IdKh).HasColumnName("id_kh");
-
-                entity.HasOne(d => d.IdKhNavigation)
-                    .WithMany(p => p.TaiKhoanGoogles)
-                    .HasForeignKey(d => d.IdKh)
-                    .HasConstraintName("fk_google");
-            });
 
             modelBuilder.Entity<Taikhoan>(entity =>
             {

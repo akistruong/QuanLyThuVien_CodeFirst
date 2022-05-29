@@ -105,7 +105,6 @@
         <div class="row px-xl-5">
             <div class="col">
                 <div class="owl-carousel related-carousel">
-                    //Code here
                     @{
                         List<Sach> products = ViewBag.mayLike;
                         if(products!=null)
@@ -119,12 +118,12 @@
                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                             <h6 class="text-truncate mb-3">@item.Tensach</h6>
                             <div class="d-flex justify-content-center">
-                                <h6>$123.00</h6><h6 class="text-muted ml-2"><del>@item.Giaban</del></h6>
+                                <h6>@FormatCurrency.Vnd(item.Giaban)</h6>
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
-                            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <button  class="btn btn-sm text-dark p-0 btnAddToCart" _id="@item.IdSach"><i class="fas fa-shopping-cart text-primary mr-1 " ></i>Add To Cart</button>
+                            <a href="/san-pham/@item.IdSach/@CustomSlug.Slugify(item.Tensach)" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Xem chi tiết</a>
+                            <button  class="btn btn-sm text-dark p-0 btnAddToCart" _id="@item.IdSach"><i class="fas fa-shopping-cart text-primary mr-1 " ></i>Thêm vào giỏ</button>
                         </div>
                     </div>
                             }
