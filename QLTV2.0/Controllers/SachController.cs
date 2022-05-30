@@ -16,12 +16,14 @@ namespace QLTV2._0.Controllers
         }
 
         [Route("/san-pham/{id}/{slug}")]
-        public IActionResult Index(int id)
+        public async Task<IActionResult> Index(int id)
         {
             
-            var res = _context.Saches.Include(x=>x.Chitiettacgia).ThenInclude(x=>x.IdTacgiaNavigation).Include(x=>x.ManxbNavigation).FirstOrDefault(x=>x.IdSach==id);
+            var res = await _context.Saches.Include(x=>x.Chitiettacgia).ThenInclude(x=>x.IdTacgiaNavigation).Include(x=>x.ManxbNavigation).FirstOrDefaultAsync(x=>x.IdSach==id);
+            var comments = await _context.Comments.Include(x => x.TaiKhoanNavigation).ThenInclude(x=>x.IdKhNavigation).Include(x => x.Replys).ThenInclude(x=>x.TaiKhoanNavigation).ThenInclude(x=>x.IdKhNavigation).Where(x=>x.Masach==res.Masach).ToListAsync();
             var mayLike = _context.Saches.Where(x => x.Matheloai == res.Matheloai).ToList();
             ViewData["mayLike"] = mayLike;
+            ViewData["comments"] = comments;
             if(res==null)
             {
                 return NotFound();

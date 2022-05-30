@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication;
+using QLTV2._0.Hubs;
 
 namespace QLTV2._0
 {
@@ -32,7 +33,7 @@ namespace QLTV2._0
             // Thiết lập ClientID và ClientSecret để truy cập API google
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-); ;
+);
             services.AddTransient<QuanLyThuVien30Context>();
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
@@ -42,6 +43,7 @@ namespace QLTV2._0
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+            services.AddSignalR() ;
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x => x.LoginPath = "/dang-nhap").AddGoogle(googleOptions=>
             {
                 googleOptions.ClientId = googleAuthNSection["ClientId"];
@@ -80,6 +82,7 @@ namespace QLTV2._0
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<CommentHub>("/comments");
                 endpoints.MapControllerRoute(
            name: "Admin",
            pattern: "{area:exists}/{controller=HomeAdmin}/{action=Index}/{id?}"
@@ -91,6 +94,7 @@ namespace QLTV2._0
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+               
             });
         }
     }

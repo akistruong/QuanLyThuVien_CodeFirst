@@ -1,4 +1,5 @@
 ﻿@using QLTV2._0.Helper
+@using System.Security.Claims;
 @model QLTV2._0.Models.Sach
 @{
     ViewData["Title"] = Model.Tensach+" | ";
@@ -97,6 +98,81 @@
             </div>
         </div>
     </div>
+    @*Comments*@
+  
+<div class="container mt-5 mb-5">
+        <h3 class="text-center">BÌNH LUẬN</h3>
+         <div class="d-flex flex-row add-comment-section mt-4 mb-4">
+                        <img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38">
+                        <input type="text" class="form-control mr-3" id="yourMessage" placeholder="Viết bình luận của bạn">
+                        <button class="btn btn-primary btnSendMessage" type="button">SEND</button>
+                    </div>
+                    <div id="messageContent">
+        @{
+            var comments =(List<Comments>)ViewBag.comments;
+            
+            if(comments.Count>0)
+            {
+                
+                @foreach(var item in comments)
+                        {
+                          <div class="d-flex justify-content-center row" id="@item.IdComment">
+             
+            <div class="d-flex flex-column col-md-8">
+                <div class="d-flex flex-row align-items-center text-left comment-top p-2 bg-white border-bottom px-4">
+                    <div class="profile-image"><img class="rounded-circle" src="https://i.imgur.com/t9toMAQ.jpg" width="70"></div>
+                    <div class="d-flex flex-column-reverse flex-grow-0 align-items-center votings ml-1"><i class="fa fa-sort-up fa-2x hit-voting"></i><span>@item.Likes</span><i class="fa fa-sort-down fa-2x hit-voting"></i></div>
+                    <div class="d-flex flex-column ml-3">
+                        <div class="d-flex flex-row post-title">
+                            <h5>@item.Content</h5><span class="ml-2">(@item.TaiKhoanNavigation?.IdKhNavigation?.TenKhachHang)</span></div>
+                        <div class="d-flex flex-row align-items-center align-content-center post-title"><span class="bdge mr-1">video</span><span class="mr-2 comments">13 comments&nbsp;</span><span class="mr-2 dot"></span><span>6 hours ago</span></div>
+                    </div>
+                </div>
+                
+                <div class="coment-bottom bg-white p-2 px-4">
+                    <div class="d-flex flex-row add-comment-section mt-4 mb-4">
+                        <img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38">
+                        <input type="text" class="form-control mr-3 replyValue" placeholder="Gửi phản hồi" >
+                        <button class="btn btn-primary btnSendReply" type="button"  _idComment="@item.IdComment" >SEND</button>
+                    </div>
+                     @*Comment item*@  
+                     <div id="reply_items" class="ml-5">
+                        @foreach(var reply in item.Replys)
+                                {
+                                      
+                         <div class="commented-section mt-2" >
+                <div class="d-flex flex-row align-items-center commented-user">
+                    <h5 class="mr-2">@reply.TaiKhoanNavigation.IdKhNavigation.TenKhachHang</h5><span class="dot mb-1"></span><span class="mb-1 ml-2">5 hours ago</span></div>
+                <div class="comment-text-sm"><span>@reply.Content</span></div>
+                <div class="reply-section">
+                    <div class="d-flex flex-row align-items-center voting-icons"><i class="fa fa-sort-up fa-2x mt-3 hit-voting"></i><i class="fa fa-sort-down fa-2x mb-3 hit-voting"></i><span class="ml-2">@reply.Likes</span><span class="dot ml-2"></span>
+                        <h6 class="ml-2 mt-1 btn btn-primary btnSendReply" _idComment=@item.IdComment>Phản hồi</h6>
+                    </div>
+                </div>
+            </div>
+
+                     
+                                }
+                              </div>
+                    
+
+            @*Comment INPUT*@
+            @*<div class="d-flex flex-row add-comment-section mt-4 mb-4"><img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38"><input type="text" class="form-control mr-3" placeholder="Add comment"><button class="btn btn-primary" type="button">Comment</button></div>*@
+
+
+    </div>
+    </div>
+                    </div>
+                }
+             
+            }
+            else
+            {
+                
+            }
+        }
+          </div>
+    </div>
     @*Có thể bạn cụng thích*@
  <div class="container-fluid py-5">
         <div class="text-center mb-4">
@@ -137,3 +213,110 @@
             </div>
         </div>
     </div>
+
+   @section scripts{
+       <script>
+            var connection;
+           const initConnection =()=>
+           {
+               connection = new signalR.HubConnectionBuilder().withUrl("/comments").build();
+         connection.start().then(()=>
+         {
+              connection.invoke("AddToGroup", "@Convert.ToString(Model.Masach)").catch(function (err) {
+        return console.error(err.toString());
+         })
+           })
+         
+        
+    };
+    const ReceiveMessage=()=>
+    {
+        connection.on("ReceiveMessage",(message,ten)=>
+        {
+            console.log(message,ten)
+            $("#messageContent").append(`
+                 <div class="d-flex justify-content-center row">
+             
+            <div class="d-flex flex-column col-md-8">
+                <div class="d-flex flex-row align-items-center text-left comment-top p-2 bg-white border-bottom px-4">
+                    <div class="profile-image"><img class="rounded-circle" src="https://i.imgur.com/t9toMAQ.jpg" width="70"></div>
+                    <div class="d-flex flex-column-reverse flex-grow-0 align-items-center votings ml-1"><i class="fa fa-sort-up fa-2x hit-voting"></i><span>${message.likes}</span><i class="fa fa-sort-down fa-2x hit-voting"></i></div>
+                    <div class="d-flex flex-column ml-3">
+                        <div class="d-flex flex-row post-content">
+                            <h5>${message.content}</h5><span class="ml-2">(${ten.ten})</span></div>
+                        <div class="d-flex flex-row align-items-center align-content-center post-title"><span class="bdge mr-1">video</span><span class="mr-2 comments">13 comments&nbsp;</span><span class="mr-2 dot"></span><span>6 hours ago</span></div>
+                    </div>
+                </div>
+                
+                <div class="coment-bottom bg-white p-2 px-4">
+                    <div class="d-flex flex-row add-comment-section mt-4 mb-4">
+                        <img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38">
+                        <input type="text" class="form-control mr-3 replyValue"  placeholder="Add comment">
+                        <button class="btn btn-primary btnSendReply"   _idComment="${message.idComment}" type="button">SEND</button>
+                    </div>
+                     @*Comment item*@  
+                  
+            
+            `)
+             SendReply();
+        })
+       
+
+    }
+      const getAllMessage=()=>
+           {
+               connection.on("ReceiveAllMessage",(listMessage)=>
+               {
+                   console.log(listMessage);
+               })
+           }
+           const getALlReply=()=>
+           {
+                connection.on("ReceiveReply",(listMessage)=>
+               {
+                  $("#reply_items").parent.find("")
+               })
+           }
+    const SendMessage=()=>
+    {
+        connection.invoke("SendMessageToGroup",'@Model.Masach.Trim()',{
+            UserName:'@User.FindFirst(ClaimTypes.NameIdentifier)?.Value',
+            Masach:"@Model.Masach",
+            Content:$("#yourMessage").val(),
+            Likes:0,
+        })
+
+   
+    }
+    $(".btnSendMessage").click(()=>
+    {
+         SendMessage();
+    })
+    const SendReply=()=>
+    {
+            $(".btnSendReply").click((e)=>
+    {
+        const idComment =parseInt( e.target.getAttribute("_idComment") );
+        connection.invoke("SendReplyToGroup","@Model.Masach.Trim()",{
+            UserName:'@User.FindFirst(ClaimTypes.NameIdentifier)?.Value',
+            IdComment :idComment,
+            Masach:"@Model.Masach",
+            Content:e.target.parentElement.getElementsByClassName("replyValue")[0].value,
+            Likes:0,
+        }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+               connection.on("ReceiveReply",(listMessage)=>
+               {
+                   console.log(listMessage)
+                  $("#reply_items").parent.find("")
+               }) 
+    })
+    }
+    initConnection();
+    getAllMessage();
+    ReceiveMessage();
+    SendReply();
+       </script>
+   }

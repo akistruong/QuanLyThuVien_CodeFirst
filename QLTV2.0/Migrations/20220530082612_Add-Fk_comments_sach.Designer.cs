@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QLTV2._0.Models;
 
 namespace QLTV2._0.Migrations
 {
     [DbContext(typeof(QuanLyThuVien30Context))]
-    partial class QuanLyThuVien30ContextModelSnapshot : ModelSnapshot
+    [Migration("20220530082612_Add-Fk_comments_sach")]
+    partial class AddFk_comments_sach
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -461,15 +463,10 @@ namespace QLTV2._0.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("(getdate())");
 
-                    b.Property<string>("UserName")
-                        .HasColumnType("char(35)");
-
                     b.HasKey("IdReply")
                         .HasName("Id_Reply");
 
                     b.HasIndex("IdComment");
-
-                    b.HasIndex("UserName");
 
                     b.ToTable("Reply");
                 });
@@ -820,15 +817,7 @@ namespace QLTV2._0.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QLTV2._0.Models.Taikhoan", "TaiKhoanNavigation")
-                        .WithMany("Replys")
-                        .HasForeignKey("UserName")
-                        .HasConstraintName("fk_reply_taikhoan")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.Navigation("CommentsNavigation");
-
-                    b.Navigation("TaiKhoanNavigation");
                 });
 
             modelBuilder.Entity("QLTV2._0.Models.Sach", b =>
@@ -931,8 +920,6 @@ namespace QLTV2._0.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Hoadons");
-
-                    b.Navigation("Replys");
                 });
 
             modelBuilder.Entity("QLTV2._0.Models.Theloai", b =>

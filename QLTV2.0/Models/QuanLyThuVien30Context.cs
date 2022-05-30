@@ -35,6 +35,8 @@ namespace QLTV2._0.Models
         public virtual DbSet<Tacgia> Tacgia { get; set; }
         public virtual DbSet<Taikhoan> Taikhoans { get; set; }
         public virtual DbSet<Theloai> Theloais { get; set; }
+        public virtual DbSet<Comments> Comments { get; set; }
+        public virtual DbSet<Replys> Replys { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -49,6 +51,27 @@ namespace QLTV2._0.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
+           
+            modelBuilder.Entity<Comments>(entity =>
+            {
+                entity.HasKey(e => e.IdComment).HasName("Id_Comment");
+                entity.ToTable("Comments");
+                entity.Property(e => e.Content).HasColumnType("ntext");
+                entity.Property(e => e.Createdat).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("(getdate())");
+                entity.HasOne(e => e.TaiKhoanNavigation).WithMany(x => x.Comments).HasForeignKey(x => x.UserName).OnDelete(DeleteBehavior.Cascade).HasConstraintName("fk_coments_taikhoan");
+                entity.HasOne(e => e.SachNavigation).WithMany(x => x.Comments).HasForeignKey(x => x.Masach).OnDelete(DeleteBehavior.Cascade).HasConstraintName("fk_coments_sach");
+            });
+            modelBuilder.Entity<Replys>(entity =>
+            {
+                entity.HasKey(e => e.IdReply).HasName("Id_Reply");
+                entity.ToTable("Reply");
+                entity.Property(e => e.Content).HasColumnType("ntext");
+                entity.Property(e => e.Createdat).HasDefaultValueSql("(getdate())");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("(getdate())");
+                entity.HasOne(e => e.CommentsNavigation).WithMany(x => x.Replys).HasForeignKey(x => x.IdComment).OnDelete(DeleteBehavior.Cascade).HasConstraintName("fk_replys_coments");
+                entity.HasOne(e => e.TaiKhoanNavigation).WithMany(x => x.Replys).HasForeignKey(x => x.UserName).OnDelete(DeleteBehavior.NoAction).HasConstraintName("fk_reply_taikhoan");
+            });
             modelBuilder.Entity<ChiTietCoupon>(entity =>
             {
                 entity.HasKey(e => new { e.MaCoupon, e.IdHoadon })

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QLTV2._0.Models;
 
 namespace QLTV2._0.Migrations
 {
     [DbContext(typeof(QuanLyThuVien30Context))]
-    partial class QuanLyThuVien30ContextModelSnapshot : ModelSnapshot
+    [Migration("20220530070525_Add-ReplysTable")]
+    partial class AddReplysTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,9 +170,6 @@ namespace QLTV2._0.Migrations
                     b.Property<int>("Likes")
                         .HasColumnType("int");
 
-                    b.Property<string>("Masach")
-                        .HasColumnType("char(10)");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -181,8 +180,6 @@ namespace QLTV2._0.Migrations
 
                     b.HasKey("IdComment")
                         .HasName("Id_Comment");
-
-                    b.HasIndex("Masach");
 
                     b.HasIndex("UserName");
 
@@ -461,15 +458,10 @@ namespace QLTV2._0.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("(getdate())");
 
-                    b.Property<string>("UserName")
-                        .HasColumnType("char(35)");
-
                     b.HasKey("IdReply")
                         .HasName("Id_Reply");
 
                     b.HasIndex("IdComment");
-
-                    b.HasIndex("UserName");
 
                     b.ToTable("Reply");
                 });
@@ -765,19 +757,11 @@ namespace QLTV2._0.Migrations
 
             modelBuilder.Entity("QLTV2._0.Models.Comments", b =>
                 {
-                    b.HasOne("QLTV2._0.Models.Sach", "SachNavigation")
-                        .WithMany("Comments")
-                        .HasForeignKey("Masach")
-                        .HasConstraintName("fk_coments_sach")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("QLTV2._0.Models.Taikhoan", "TaiKhoanNavigation")
                         .WithMany("Comments")
                         .HasForeignKey("UserName")
                         .HasConstraintName("fk_coments_taikhoan")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("SachNavigation");
 
                     b.Navigation("TaiKhoanNavigation");
                 });
@@ -820,15 +804,7 @@ namespace QLTV2._0.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QLTV2._0.Models.Taikhoan", "TaiKhoanNavigation")
-                        .WithMany("Replys")
-                        .HasForeignKey("UserName")
-                        .HasConstraintName("fk_reply_taikhoan")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.Navigation("CommentsNavigation");
-
-                    b.Navigation("TaiKhoanNavigation");
                 });
 
             modelBuilder.Entity("QLTV2._0.Models.Sach", b =>
@@ -911,8 +887,6 @@ namespace QLTV2._0.Migrations
 
                     b.Navigation("Chitiettacgia");
 
-                    b.Navigation("Comments");
-
                     b.Navigation("Hinhanhs");
                 });
 
@@ -931,8 +905,6 @@ namespace QLTV2._0.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Hoadons");
-
-                    b.Navigation("Replys");
                 });
 
             modelBuilder.Entity("QLTV2._0.Models.Theloai", b =>

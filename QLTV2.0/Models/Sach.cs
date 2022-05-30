@@ -14,6 +14,7 @@ namespace QLTV2._0.Models
             Chitietsales = new HashSet<Chitietsale>();
             Chitiettacgia = new HashSet<Chitiettacgia>();
             Hinhanhs = new HashSet<Hinhanh>();
+            Comments = new HashSet<Comments>();
         }
 
         public int IdSach { get; set; }
@@ -39,5 +40,6 @@ namespace QLTV2._0.Models
         public virtual ICollection<Chitietsale> Chitietsales { get; set; }
         public virtual ICollection<Chitiettacgia> Chitiettacgia { get; set; }
         public virtual ICollection<Hinhanh> Hinhanhs { get; set; }
+        public virtual ICollection<Comments> Comments { get; set; }
     }
 }

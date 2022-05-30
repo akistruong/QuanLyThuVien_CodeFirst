@@ -11,6 +11,8 @@ namespace QLTV2._0.Models
         public Taikhoan()
         {
             Hoadons = new HashSet<Hoadon>();
+            Comments = new HashSet<Comments>();
+            Replys = new HashSet<Replys>();
         }
 
         public int IdTaikhoan { get; set; }
@@ -23,5 +25,7 @@ namespace QLTV2._0.Models
         public decimal? phiship { get; set; }
         public virtual KhachHang IdKhNavigation { get; set; }
         public virtual ICollection<Hoadon> Hoadons { get; set; }
+        public virtual ICollection<Comments> Comments { get; set; }
+        public virtual ICollection<Replys> Replys { get; set; }
     }
 }
