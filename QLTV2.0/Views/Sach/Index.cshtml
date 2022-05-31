@@ -146,7 +146,7 @@
                 <div class="comment-text-sm"><span>@reply.Content</span></div>
                 <div class="reply-section">
                     <div class="d-flex flex-row align-items-center voting-icons"><i class="fa fa-sort-up fa-2x mt-3 hit-voting"></i><i class="fa fa-sort-down fa-2x mb-3 hit-voting"></i><span class="ml-2">@reply.Likes</span><span class="dot ml-2"></span>
-                        <h6 class="ml-2 mt-1 btn btn-primary btnSendReply" _idComment=@item.IdComment>Phản hồi</h6>
+                        <h6 class="ml-2 mt-1 btn btn-primary btnSendReply " _idComment=@item.IdComment>Phản hồi</h6>
                     </div>
                 </div>
             </div>
@@ -219,7 +219,7 @@
             var connection;
            const initConnection =()=>
            {
-               connection = new signalR.HubConnectionBuilder().withUrl("/comments").build();
+               connection = new signalR.HubConnectionBuilder().withUrl("/comments").withAutomaticReconnect([0, 0, 10000]).build();
          connection.start().then(()=>
          {
               connection.invoke("AddToGroup", "@Convert.ToString(Model.Masach)").catch(function (err) {
@@ -252,7 +252,7 @@
     <div class="d-flex flex-row add-comment-section mt-4 mb-4">
         <img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38">
         <input type="text" class="form-control mr-3 replyValue"  placeholder="Add comment">
-        <button class="btn btn-primary btnSendReply"   _idComment="${message.idComment}" type="button">SEND</button>
+        <button class="btn btn-primary btnSendReply ${message.idComment}"   _idComment="${message.idComment}" type="button">SEND</button>
     </div>
     <div class="reply_items">
                   
@@ -264,7 +264,19 @@
                   
             
             `)
-             SendReply();
+              $(`.btnSendReply.${message.idComment}`).on("click",  (e)=>
+    {
+        const idComment =parseInt( e.target.getAttribute("_idComment") );
+        connection.invoke("SendReplyToGroup","@Model.Masach.Trim()",{
+            UserName:'@User.FindFirst(ClaimTypes.NameIdentifier)?.Value',
+            IdComment :idComment,
+            Masach:"@Model.Masach",
+            Content:e.target.parentElement.getElementsByClassName("replyValue")[0].value,
+            Likes:0,
+        }).catch(function (err) {
+        return console.error(err.toString());
+    })
+    })
         })
        
 
@@ -280,6 +292,8 @@
            {
                 connection.on("ReceiveReply",(listMessage,name)=>
                {
+                   console.log(listMessage)
+
                   $(`#${listMessage.idComment}`).find(".reply_items").append(`
                    <div class="commented-section mt-2" >
                 <div class="d-flex flex-row align-items-center commented-user">
@@ -312,7 +326,7 @@
     })
     const SendReply=()=>
     {
-            $(".btnSendReply").click((e)=>
+         $(".btnSendReply").on("click",  (e)=>
     {
         const idComment =parseInt( e.target.getAttribute("_idComment") );
         connection.invoke("SendReplyToGroup","@Model.Masach.Trim()",{
@@ -323,11 +337,10 @@
             Likes:0,
         }).catch(function (err) {
         return console.error(err.toString());
-    });
-
-             
+    })
     })
     }
+
     initConnection();
     getAllMessage();
     ReceiveMessage();
