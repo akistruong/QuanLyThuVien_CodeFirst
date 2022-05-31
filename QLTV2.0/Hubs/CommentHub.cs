@@ -33,7 +33,9 @@ namespace QLTV2._0.Hubs
             {
                 await _context.SaveChangesAsync();
                 var reply = await _context.Replys.Include(x=>x.TaiKhoanNavigation).ThenInclude(x=>x.IdKhNavigation).FirstOrDefaultAsync(x=>x.IdReply==body.IdReply);
-                await Clients.Group(group).SendAsync("ReceiveReply", reply);
+                var user = await _context.Taikhoans.FirstOrDefaultAsync(x => x.UserName == reply.UserName);
+                var userInfo = await _context.KhachHangs.FirstOrDefaultAsync(x => x.IdKh == user.IdKh);
+                await Clients.Group(group).SendAsync("ReceiveReply", reply, userInfo.TenKhachHang);
             }
             catch (Exception ex)
             {
