@@ -22,6 +22,7 @@ namespace QLTV2._0.Models
         public string Salt { get; set; }
         public int? Role { get; set; }
         public int? IdKh { get; set; }
+        public string? avatar { get; set; }
         public decimal? phiship { get; set; }
         public virtual KhachHang IdKhNavigation { get; set; }
         public virtual ICollection<Hoadon> Hoadons { get; set; }

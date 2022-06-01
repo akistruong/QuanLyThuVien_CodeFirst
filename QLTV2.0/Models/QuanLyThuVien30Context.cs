@@ -549,7 +549,7 @@ namespace QLTV2._0.Models
             {
                 entity.HasKey(e => e.UserName)
                     .IsClustered(false);
-
+                entity.Property(e => e.avatar).HasColumnType("text");
                 entity.ToTable("TAIKHOAN");
                 entity.Property(e => e.phiship).HasColumnName("PhiShip").HasColumnType("money");
                 entity.Property(e => e.UserName)

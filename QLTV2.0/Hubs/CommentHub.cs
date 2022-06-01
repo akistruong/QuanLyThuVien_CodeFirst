@@ -54,8 +54,9 @@ namespace QLTV2._0.Hubs
                 var userInfo = await _context.KhachHangs.FirstOrDefaultAsync(x => x.IdKh == user.IdKh);
                 await Clients.Group(group).SendAsync("ReceiveMessage", comment, new
                 {
-                    Ten = userInfo.TenKhachHang
-                }); ;
+                    Ten = userInfo.TenKhachHang,
+                    Avt = user.avatar
+                })  ;
             }
             catch (Exception ex)
             {

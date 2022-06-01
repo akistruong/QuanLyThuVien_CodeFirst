@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QLTV2._0.Models;
 
 namespace QLTV2._0.Migrations
 {
     [DbContext(typeof(QuanLyThuVien30Context))]
-    partial class QuanLyThuVien30ContextModelSnapshot : ModelSnapshot
+    [Migration("20220601120403_column_avatar_taikhoan")]
+    partial class column_avatar_taikhoan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -644,7 +646,9 @@ namespace QLTV2._0.Migrations
                         .IsFixedLength(true);
 
                     b.Property<string>("avatar")
-                        .HasColumnType("text");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("user--v1.png");
 
                     b.Property<decimal?>("phiship")
                         .HasColumnType("money")

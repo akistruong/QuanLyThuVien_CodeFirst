@@ -108,6 +108,7 @@ namespace QLTV2._0.Controllers
         {
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var userName = HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+            var avatar = HttpContext.User.Claims.FirstOrDefault(x=>x.ValueType== "url")?.Value;
             var res = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
            if(userId is not null)
             {
@@ -121,6 +122,7 @@ namespace QLTV2._0.Controllers
                     if(khSave>0)
                     {
                         var account = new Taikhoan();
+                        account.avatar = avatar;    
                         account.UserName = userId;
                         account.IdKh = KhachHang.IdKh;
                         _context.Taikhoans.Add(account);
@@ -199,6 +201,7 @@ namespace QLTV2._0.Controllers
                     if (khSave > 0)
                     {
                         var account = new Taikhoan();
+                        account.avatar = "/assets/res/user--v1.png";
                         account.UserName = userId;
                         account.IdKh = KhachHang.IdKh;
                         _context.Taikhoans.Add(account);
