@@ -72,9 +72,11 @@
                 <span asp-validation-for="UpdatedAt" class="text-danger"></span>
             </div>
              <div class="form-group">
-                <label asp-for="Mota" class="control-label">Mô tả</label>
-                 <textarea asp-for="Mota" class="form-control" placeholder="Nhập nội dung mô tả về sản phẩm"></textarea>
-                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+                <label asp-for="Mota" class="control-label">Mô tả sản phẩm</label>
+                 <textarea id="inp_editor1" name="Mota">
+                    @Model.Mota
+</textarea>  
+                <span asp-validation-for="Mota" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -91,6 +93,7 @@
 @section scripts
 {
     <script>
+         var editor1 = new RichTextEditor("#inp_editor1");    
         var id = $("#file").attr("itemid")
           const handleUploadFile=()=>
       {

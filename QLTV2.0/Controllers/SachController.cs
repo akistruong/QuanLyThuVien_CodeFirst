@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using QLTV2._0.Models;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace QLTV2._0.Controllers
@@ -20,6 +21,7 @@ namespace QLTV2._0.Controllers
         {
             
             var res = await _context.Saches.Include(x=>x.Chitiettacgia).ThenInclude(x=>x.IdTacgiaNavigation).Include(x=>x.ManxbNavigation).FirstOrDefaultAsync(x=>x.IdSach==id);
+            res.Mota = WebUtility.HtmlDecode(res.Mota);
             var comments = await _context.Comments.Include(x => x.TaiKhoanNavigation).ThenInclude(x=>x.IdKhNavigation).Include(x => x.Replys).ThenInclude(x=>x.TaiKhoanNavigation).ThenInclude(x=>x.IdKhNavigation).Where(x=>x.Masach==res.Masach).ToListAsync();
             var mayLike = _context.Saches.Where(x => x.Matheloai == res.Matheloai).ToList();
             ViewData["mayLike"] = mayLike;

@@ -28,9 +28,16 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="~/css/style.css" rel="stylesheet" asp-append-version="true">
+
+     <link href="~/lib/richeditor/rte_theme_default.css" rel="stylesheet">
 </head>
 
 <body>
+    <div id="fb-root"></div>
+
+    <!-- Your Plugin chat code -->
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
     <a href="#" class="btn btn-primary back-to-top" style="display: inline;"><i class="fa fa-angle-double-up"></i></a>
      <div class="container-fluid">
         <div class="row bg-secondary py-2 px-xl-5">
@@ -241,6 +248,25 @@
     <script src="~/js/site.js"  type="text/javascript" asp-append-version="true"></script>
     <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"  type="text/javascript" asp-append-version="true"></script>
     <script>
+                   var chatbox = document.getElementById('fb-customer-chat');
+      chatbox.setAttribute("page_id", "113884511288762");
+      chatbox.setAttribute("attribution", "biz_inbox");
+
+      window.fbAsyncInit = function() {
+        FB.init({
+          xfbml            : true,
+          version          : 'v14.0'
+        });
+      };
+
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
         $("#search_books").keyup((e)=>
         {
             $.get("/search?key="+e.target.value,(data,err)=>
@@ -268,6 +294,8 @@
         })
     
     </script>
+        <script src="~/lib/richeditor/all_plugins.js"></script>
+    <script src="~/lib/richeditor/rte.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

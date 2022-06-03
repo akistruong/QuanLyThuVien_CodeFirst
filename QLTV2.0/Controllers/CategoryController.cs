@@ -23,9 +23,9 @@ namespace QLTV2._0.Controllers
         }
         [HttpGet]
         [Route("/api/GetBookByCategory")]
-        public IActionResult GetBookByCategory(int id,string? price)
+        public IActionResult GetBookByCategory(int id,string? price,string? sortBy)
         {
-            var sachs = _context.Saches.Include(x=>x.MatheloaiNavigation).Where(x => x.MatheloaiNavigation.IdTheloai == id);
+            var sachs = _context.Saches.Include(x=>x.MatheloaiNavigation).Where(x => x.MatheloaiNavigation.IdTheloai == id).Where(x => x.Slton > 0);
             if(sachs is not null)
             {
                 if(!String.IsNullOrEmpty(price))
@@ -42,7 +42,23 @@ namespace QLTV2._0.Controllers
                         sachs = _context.Saches.Include(x => x.MatheloaiNavigation).Where(x => x.MatheloaiNavigation.IdTheloai == id);
                        
                     }
+
                    
+                }
+                switch (sortBy)
+                {
+                    case "cu":
+                        sachs = _context.Saches.OrderByDescending(s => s.Createdat).Where(x => x.MatheloaiNavigation.IdTheloai == id).Where(x=>x.Slton>0);
+                        break;
+                    case "giam":
+                        sachs = _context.Saches.OrderByDescending(s => s.Giaban).Where(x => x.MatheloaiNavigation.IdTheloai == id).Where(x => x.Slton > 0);
+                        break;
+                    case "moi":
+                        sachs=_context.Saches.OrderBy(s => s.Createdat).Where(x => x.MatheloaiNavigation.IdTheloai == id).Where(x => x.Slton > 0);
+                        break;
+                    default:
+                        sachs = _context.Saches.OrderBy(s => s.Giaban).Where(x => x.MatheloaiNavigation.IdTheloai == id).Where(x => x.Slton > 0);
+                        break;
                 }
                 return Json(sachs);
             }
