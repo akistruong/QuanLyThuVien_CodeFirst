@@ -42,6 +42,7 @@ namespace QLTV2._0.Areas.Me.Controllers
             {
                 kh.DiaChi = body.DiaChi;
                 kh.Sdt = body.Sdt;
+                kh.Email = body.Email;
                 kh.TenKhachHang = body.TenKhachHang;
                 kh.Ngaysinh= body.Ngaysinh;
                 kh.Gioitinh = body.Gioitinh;

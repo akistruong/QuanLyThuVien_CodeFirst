@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using QLTV2._0.Helper;
 using QLTV2._0.Models;
 using System;
 using System.Linq;
@@ -8,6 +11,7 @@ using System.Threading.Tasks;
 namespace QLTV2._0.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "1")]
     public class DonHangController : Controller
     {
         readonly QuanLyThuVien30Context _context;
@@ -67,7 +71,8 @@ namespace QLTV2._0.Areas.Admin.Controllers
         }
         public async Task<IActionResult> ConfirmOrder(int orderId)
         {
-             var hoadon = await _context.Hoadons.FirstOrDefaultAsync(x => x.IdHoadon == orderId);
+             var hoadon = await _context.Hoadons.Include(x=>x.IdKhNavigation).FirstOrDefaultAsync(x => x.IdHoadon == orderId);
+            var chitiethoadon = await _context.Chitiethoadons.Include(x => x.MasachNavigation).Where(x=>x.IdHoadon==hoadon.IdHoadon).ToListAsync();
                 if (hoadon != null)
                 {
                 
@@ -75,10 +80,18 @@ namespace QLTV2._0.Areas.Admin.Controllers
                 {
                     hoadon.Status = 1;
                     await _context.SaveChangesAsync();
-                    return Ok(new
-                    {
-                        success=true,
-                    });
+                    var sendMailService = HttpContext.RequestServices.GetService<SendMailService>();
+                    var mailContent = new MailBody();
+                    mailContent.To = hoadon.IdKhNavigation.Email;
+                    mailContent.Subject = "Eshopper - XÁC NHẬN ĐẶT HÀNG THÀNH CÔNG";
+                    var detailOrders = EmailTemplate.DetailsOrder(chitiethoadon);
+                    mailContent.Body =EmailTemplate.Html(hoadon,detailOrders);  
+                    var res=  sendMailService.SendMail(mailContent);
+                        return Ok(new
+                        {
+                            success = true,
+                        });
+
                 }
                 catch (Exception e)
                 {

@@ -4,6 +4,7 @@ using QLTV2._0.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System;
 
 namespace QLTV2._0.Areas.Admin.Controllers
 {
@@ -33,7 +34,35 @@ namespace QLTV2._0.Areas.Admin.Controllers
                 total.Add(response);
                 dict.Add("T"+i,response);
             }
-            return Json(total);
+            return Json(new {
+                total,
+                AvrTotal = total.Sum()/12,
+                ordersSum = DonHangThangNay(),
+                pendingOrder = DonHangChoXacNhan(),
+            });
+
         }
+        decimal DoanhSoThangNay()
+        { 
+            var month = DateTime.Now.Month;
+            var res = (decimal)_context.Hoadons.Where(x=>x.Createdat.Value.Month==month).Sum(x=>x.TongHoaDon);
+            return res;
+        }
+        int DonHangThangNay()
+        {
+            var month = DateTime.Now.Month;
+            var res = (int)_context.Hoadons.Where(x => x.Createdat.Value.Month == month).Where(x=>x.Status==1).Count();
+            return res;
+        }
+        int DonHangChoXacNhan()
+        {
+            var res = (int)_context.Hoadons.Where(x => x.Status == 0).Count();
+            return res;
+        }   
+        //Sach SachBanChay()
+        //{
+        //    var res = (int)_context.Hoadons.Where(x => x.Status == 0).Count();
+        //    return res;
+        //}
     }
 }

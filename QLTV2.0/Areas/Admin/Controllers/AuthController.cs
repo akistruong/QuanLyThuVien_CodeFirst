@@ -108,6 +108,7 @@ namespace QLTV2._0.Controllers
         {
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var userName = HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+            var Email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
             var avatar = HttpContext.User.Claims.FirstOrDefault(x=>x.ValueType== "url")?.Value;
             var res = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
            if(userId is not null)
@@ -117,6 +118,7 @@ namespace QLTV2._0.Controllers
                 {
                     var KhachHang = new KhachHang();
                     KhachHang.TenKhachHang = userName;
+                    KhachHang.Email = Email;
                     _context.KhachHangs.Add(KhachHang);
                     var khSave = await _context.SaveChangesAsync();
                     if(khSave>0)

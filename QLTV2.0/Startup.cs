@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication;
 using QLTV2._0.Hubs;
+using QLTV2._0.Helper;
 
 namespace QLTV2._0
 {
@@ -28,6 +29,10 @@ namespace QLTV2._0
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+            var mailConfig = Configuration.GetSection("MailConfig");
+            services.Configure<MailConfig>(mailConfig);
+            services.AddTransient<SendMailService>();
             IConfigurationSection googleAuthNSection = Configuration.GetSection("Authentication:Google");
 
             // Thiết lập ClientID và ClientSecret để truy cập API google

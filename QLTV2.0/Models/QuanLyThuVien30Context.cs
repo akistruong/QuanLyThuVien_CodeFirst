@@ -320,7 +320,7 @@ namespace QLTV2._0.Models
                 entity.HasOne(d => d.IdKhNavigation)
                     .WithMany(p => p.Hoadons)
                     .HasForeignKey(d => d.IdKh)
-                    .HasConstraintName("fk_kh");
+                    .HasConstraintName("fk_kh").OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(d => d.UserNameNavigation)
                     .WithMany(p => p.Hoadons)
@@ -336,6 +336,7 @@ namespace QLTV2._0.Models
                 entity.ToTable("KhachHang");
 
                 entity.Property(e => e.IdKh).HasColumnName("id_kh");
+                entity.Property(e => e.Email).HasColumnType("char(50)");
 
                 entity.Property(e => e.DiaChi).HasColumnType("ntext");
 
@@ -579,7 +580,7 @@ namespace QLTV2._0.Models
                 entity.HasOne(d => d.IdKhNavigation)
                     .WithMany(p => p.Taikhoans)
                     .HasForeignKey(d => d.IdKh)
-                    .HasConstraintName("fk_tk");
+                    .HasConstraintName("fk_tk").OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Theloai>(entity =>

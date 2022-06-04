@@ -5,11 +5,15 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 <form action="don-hang" id="statusForm" >
-     <label>Sắp xếp theo</label>
+<div class="d-inline-flex p-2">
+    
 <select name="status" class="form-control" id="statusSelect">
+       <option selected >Lọc theo</option>
      <option value="0" >Chưa xác nhận</option>
       <option value="1">Đã xác nhận</option>
     </select>
+    <button class="btn btn-primary btn-block" type="submit">Xác nhận</button>
+</div>
 </form>
 
 <div class="table-responsive">
@@ -158,10 +162,10 @@
        }
        handleConfirmOrder();
        handleDeleteOrder();
-       $("#statusSelect").change((e)=>
-       {
-           e.preventDefault();
-           $("#statusForm").submit();
-       })
+       //$("#statusSelect").change((e)=>
+       //{
+       //    e.preventDefault();
+       //    $("#statusForm").submit();
+       //})
     </script>
 }

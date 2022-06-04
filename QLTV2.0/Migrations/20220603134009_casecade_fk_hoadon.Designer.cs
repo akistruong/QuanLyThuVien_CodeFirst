@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QLTV2._0.Models;
 
 namespace QLTV2._0.Migrations
 {
     [DbContext(typeof(QuanLyThuVien30Context))]
-    partial class QuanLyThuVien30ContextModelSnapshot : ModelSnapshot
+    [Migration("20220603134009_casecade_fk_hoadon")]
+    partial class casecade_fk_hoadon
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -332,9 +334,6 @@ namespace QLTV2._0.Migrations
 
                     b.Property<string>("DiaChi")
                         .HasColumnType("ntext");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("char(50)");
 
                     b.Property<bool?>("Gioitinh")
                         .HasColumnType("bit")
@@ -871,8 +870,7 @@ namespace QLTV2._0.Migrations
                     b.HasOne("QLTV2._0.Models.KhachHang", "IdKhNavigation")
                         .WithMany("Taikhoans")
                         .HasForeignKey("IdKh")
-                        .HasConstraintName("fk_tk")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasConstraintName("fk_tk");
 
                     b.Navigation("IdKhNavigation");
                 });

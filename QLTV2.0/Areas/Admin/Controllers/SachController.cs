@@ -13,7 +13,7 @@ using QLTV2._0.Models;
 namespace QLTV2._0.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "1")]
     public class SachController : Controller
     {
         private readonly QuanLyThuVien30Context _context;

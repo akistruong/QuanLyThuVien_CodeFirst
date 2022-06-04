@@ -14,7 +14,7 @@
     </div>
     <div class="form-group col-md-12">
       <label for="inputEmail4">Email</label>
-      <input disabled type="email" class="form-control" id="inputEmail4" placeholder="Email" value="@Context.User.FindFirst(ClaimTypes.Email)?.Value">
+      <input disabled type="email"  name="Email" placeholder="Email" value="@Context.User.FindFirst(ClaimTypes.Email)?.Value">
     </div>   
     <div class="form-group col-md-12">
       <label for="inputEmail4">Số điện thoại</label>
@@ -88,10 +88,12 @@
             const ward =$('#ward').find(":selected").text();
             const ten = $("input[name='TenKhachHang']").val();
             const phone = $("input[name='Sdt']").val()
+            const email = $("input[name='Email']").val()
             $.post("/me/thiet-lap?id=@Model?.IdKh",{
             TenKhachHang:ten,
             Sdt:phone,
-            DiaChi:ward + ", "+districtCode+"-"+district+", "+province+"."
+            DiaChi:ward + ", "+districtCode+"-"+district+", "+province+".",
+            email:email
             },(data,err)=>
             {
                 if(data)

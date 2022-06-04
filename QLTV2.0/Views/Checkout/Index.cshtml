@@ -6,7 +6,7 @@
     decimal feeShip = 0;
     int districtCode=0;
     Taikhoan kh = ViewBag?.KhachHang;
-    if(kh is not null&&User.IsInRole("0"))
+    if(kh is not null&&kh.IdKhNavigation.DiaChi is not null)
     {
         var data =kh.IdKhNavigation.DiaChi.Split(",")[1];
         districtCode = Int32.Parse(data.Split("-")[0]);
@@ -53,6 +53,10 @@
                             <label>Số điện thoại</label>
                             <input class="form-control" type="text" placeholder="Số điện thoại người nhận hàng" id="Sdt">
                         </div>
+                                               <div class="col-md-12 form-group">
+                            <label>Email</label>
+                            <input class="form-control" type="text" placeholder="Email xác nhận đơn hàng" id="Email">
+                        </div>
                        
                         
                           <div class="col-md-12 form-group">
@@ -78,8 +82,7 @@
 
             </div>
         }
-         @if(kh.IdKhNavigation.DiaChi is not null ||kh.IdKhNavigation.Sdt is not  null )
-            {
+        
                  <div class="col-lg-4">
                 <div class="card border-secondary mb-5">
                     <form class="mb-5" action="">
@@ -127,7 +130,7 @@
                 </div>
 
             </div>
-            }
+            
        
         </div>
     </div>
@@ -219,6 +222,7 @@ $("#ship_fee").html(`${ShipFeeConvertVnd}`);
                     $.post("/dat-hang",{
                         TenKhachHang:`${Honguoimua} ${Tennguoimua}`,
                         Sdt,
+                        Email:$("#Email").val(),
                         DiaChi:`${ward}, ${district}, ${province}`,
                         TongHoaDon:finalPrice,
                         Phiship:shipfee,
