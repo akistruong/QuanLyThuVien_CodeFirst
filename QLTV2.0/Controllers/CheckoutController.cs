@@ -59,7 +59,7 @@ namespace QLTV2._0.Controllers
                    
                    
                     hoadon.Soluong = data.Sum(x => x.qty);
-                    hoadon.TongHoaDon = data.Sum(x => x.total);
+                    hoadon.TongHoaDon = data.Sum(x => x.total)+hoadon.Phiship;
                     hoadon.IdKh = kh.IdKh;
                     var HoaDon = _context.Hoadons.Add(hoadon);
                     var HoaDonSave = _context.SaveChanges();
@@ -101,7 +101,7 @@ namespace QLTV2._0.Controllers
             else
             {
                 hoadon.Soluong = data.Sum(x => x.qty);
-                hoadon.TongHoaDon = data.Sum(x => x.total);
+                hoadon.TongHoaDon = data.Sum(x => x.total) + hoadon.Phiship;
                 hoadon.IdKh = kh.IdKh;
                 var HoaDon = _context.Hoadons.Add(hoadon);
                 var HoaDonSave = _context.SaveChanges();

@@ -178,7 +178,11 @@ $("#ship_fee").html(`${ShipFeeConvertVnd}`);
             const cost =()=>
             {
                 let district_id = $('#district').find(":selected").val();
-                console.log({district_id})
+                
+                $("#ship_fee").html(`<div class="spinner-border" role="status">
+  <span class="sr-only">Loading...</span>
+</div>`)
+
                   $.ajax
   ({
       type: "GET",
@@ -209,7 +213,7 @@ $("#ship_fee").html(`${ShipFeeConvertVnd}`);
     })
             }
 
-            const handleSubmitOrder=()=>
+             const handleSubmitOrder=()=>
             {
                 
                 
@@ -218,24 +222,32 @@ $("#ship_fee").html(`${ShipFeeConvertVnd}`);
                  const Tennguoimua = document.getElementById("Tennguoimua")?.value;
                 const Honguoimua = document.getElementById("Honguoimua")?.value;
                 const Sdt = document.getElementById("Sdt")?.value;
-                
-                    $.post("/dat-hang",{
-                        TenKhachHang:`${Honguoimua} ${Tennguoimua}`,
-                        Sdt,
-                        Email:$("#Email").val(),
-                        DiaChi:`${ward}, ${district}, ${province}`,
-                        TongHoaDon:finalPrice,
-                        Phiship:shipfee,
-                        Discount:0,
-                        IdKh:idKh
-                    },(data,err)=>
+                const  Email=$("#Email").val()
+                if(Tennguoimua&&Honguoimua&&Sdt&&   Email&&shipfee)
+                {
+                  $.post("/dat-hang",{
+                    TenKhachHang:`${Honguoimua} ${Tennguoimua}`,
+                    Sdt,
+                    Email:Email,
+                    DiaChi:`${ward}, ${district}, ${province}`,
+                    TongHoaDon:finalPrice,
+                    Phiship:shipfee,
+                    Discount:0,
+                    IdKh:idKh
+                },(data,err)=>
+                {
+                    if(data.success)
                     {
-                        if(data.success)
-                        {
-                            alert(data.msg)
-                            window.location.replace("/");
-                        }
-                    })
+                        alert(data.msg)
+                        window.location.replace("/");
+                    }
+                })
+                }
+                else
+                {
+                    alert("Vui lòng nhập đầy đủ thông tin")
+                }
+                   
                 })
             }
 
