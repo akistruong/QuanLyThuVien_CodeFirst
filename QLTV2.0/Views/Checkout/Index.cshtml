@@ -1,4 +1,5 @@
 ﻿@using QLTV2._0.Helper
+@using System.Security.Claims;
 @model List<QLTV2._0.Models.CartComponentModels.CartItems>
 @{
     ViewData["Title"] = "Index";
@@ -22,12 +23,16 @@
             {
                   if(kh.IdKhNavigation.DiaChi is null ||kh.IdKhNavigation.Sdt is null )
             {
-                <p class="text-danger">Thông tin khách hàng chưa được cập nhật, vui lòng cập nhật số điện thoại và địa chỉ để đặt hàng. <a href="/me/settings">Cập nhật tại đây</a> </p>
+                <p class="text-danger">Thông tin khách hàng chưa được cập nhật, vui lòng cập nhật số điện thoại và địa chỉ để đặt hàng. <a href="/me/settings/@User.FindFirst(ClaimTypes.NameIdentifier)?.Value.">Cập nhật tại đây</a> </p>
             }
             else
             {
                  <div class="col-lg-8">
             <p>Đơn hàng của thành viên <a href="#">@kh?.IdKhNavigation?.TenKhachHang</a> sẽ được vận chuyển đến địa chỉ <a href="#">@kh?.IdKhNavigation?.DiaChi</a> </p>
+            <input type="hidden" id="Tennguoimua" value="@kh.IdKhNavigation.TenKhachHang.Split(" ")[0]">
+            <input type="hidden" id="Honguoimua" value="@kh.IdKhNavigation.TenKhachHang.Split(" ")[1]">
+            <input type="hidden" id="Sdt" value="@kh.IdKhNavigation.Sdt">
+            <input type="hidden" id="Email" value="@kh.IdKhNavigation.Email">
             </div>
             }
             }

@@ -1,11 +1,10 @@
 ﻿@model IEnumerable<QLTV2._0.Models.Nxb>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Quản lý nhà xuất bản";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -14,16 +13,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Manxb)
+               Mã Nxb
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Diachi)
+                Địa chỉ
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Sdt)
+                Số điện thoại   
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tennxb)
+               Tên nhà xuất bản
             </th>
             <th></th>
         </tr>
@@ -44,9 +43,8 @@
                 @Html.DisplayFor(modelItem => item.Tennxb)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Manxb">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Manxb">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Manxb">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Manxb">Chỉnh sửa</a> |
+                <a asp-action="Delete" asp-route-id="@item.Manxb">Xóa</a>
             </td>
         </tr>
 }

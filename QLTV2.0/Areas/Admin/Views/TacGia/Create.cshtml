@@ -1,20 +1,17 @@
 ﻿@model QLTV2._0.Models.Tacgia
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Tạo tác giả";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Tacgia</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Tentacgia" class="control-label"></label>
+                <label asp-for="Tentacgia" class="control-label">Tên tác giả</label>
                 <input asp-for="Tentacgia" class="form-control" />
                 <span asp-validation-for="Tentacgia" class="text-danger"></span>
             </div>
